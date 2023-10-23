@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.Execution = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // button1
+            // Execution
             // 
-            this.button1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.button1.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.button1.Location = new System.Drawing.Point(355, 406);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Execute";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.Execution.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.Execution.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.Execution.Location = new System.Drawing.Point(355, 406);
+            this.Execution.Name = "Execution";
+            this.Execution.Size = new System.Drawing.Size(75, 23);
+            this.Execution.TabIndex = 0;
+            this.Execution.Text = "Execute";
+            this.Execution.UseVisualStyleBackColor = false;
+            this.Execution.Click += new System.EventHandler(this.button1_Click);
             // 
             // pictureBox1
             // 
@@ -66,7 +66,7 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(25, 274);
+            this.textBox2.Location = new System.Drawing.Point(25, 272);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(365, 20);
             this.textBox2.TabIndex = 3;
@@ -79,7 +79,7 @@
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.Execution);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -90,7 +90,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Execution;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
