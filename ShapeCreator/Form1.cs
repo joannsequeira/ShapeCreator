@@ -13,8 +13,8 @@ namespace ShapeCreator
 {
     public partial class Form1 : Form
     {
-        
 
+        Bitmap b;
         public Form1()
         {
             InitializeComponent();
@@ -42,6 +42,23 @@ namespace ShapeCreator
             writeIt.Write(textBox2.Text);
             writeIt.Write(textBox1.Text);
             writeIt.Close();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            FormSet.ClearForm(this);
+        }
+
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            
+                Graphics g = e.Graphics;
+                //g.DrawImageUnscaled(b, 0, 0);
+                Pen mypen = new Pen(Color.Black,2);
+                g.DrawLine(mypen, 0, 0, 100, 100);
+
+
+            
         }
     }
 }
