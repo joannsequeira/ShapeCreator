@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 namespace ShapeCreator
 {
     public class CommandParser
-
     {
-        var similarity = false;
+
     }
+
+
+    
 }
