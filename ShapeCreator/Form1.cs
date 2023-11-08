@@ -22,7 +22,7 @@ namespace ShapeCreator
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -53,9 +53,9 @@ namespace ShapeCreator
         {
             
                 Graphics g = e.Graphics;
-                //g.DrawImageUnscaled(b, 0, 0);
-                Pen mypen = new Pen(Color.Black,2);
-                g.DrawLine(mypen, 0, 0, 100, 100);
+                g.DrawImageUnscaled(b, 0, 0);
+               
+               
 
 
             

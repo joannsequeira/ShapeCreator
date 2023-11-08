@@ -19,13 +19,8 @@ namespace ShapeCreator
                     TextBox textBox = (TextBox)cont;
                     textBox.Text = null;
                 }
-                if (cont is PictureBox)
-                {
-                    PictureBox pBox = (PictureBox)cont;
-                    pBox.Image = null;
-
-                }
-            }
+               
+           }
         }
     }
 }
