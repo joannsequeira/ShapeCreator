@@ -15,6 +15,9 @@ namespace ShapeCreator
     {
 
         Bitmap b;
+        Shapes = new Shape(Graphics.FromImage(OutputBitmap));
+        cmdList = new CmdLists(Shapes);
+
         public Form1()
         {
             InitializeComponent();
@@ -24,6 +27,9 @@ namespace ShapeCreator
         {
             
         }
+
+
+      
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -58,7 +64,36 @@ namespace ShapeCreator
                
 
 
-            
+          }
+
+        private void textBox2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                var com = textBox2.Text;
+                if (string.IsNullOrEmpty(com))
+                    return;
+                parseCom(com);
+                textBox2.Text = " ";
+                Refresh();
+
+            }
         }
+
+        public void parseCom(string com)
+        {
+            try
+            {
+                cmdList.Parse(com);
+
+            }
+
+            catch (InvalidDataException e)
+            {
+                MessageBox.Show(e.Message, @"Error in Command");
+                   
+            }
+        }
+
     }
 }

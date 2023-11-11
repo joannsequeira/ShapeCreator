@@ -41,6 +41,17 @@ namespace ShapeCreator
             sb = new SolidBrush(colr);
         }
 
+        public void Clearsc()
+        {
+            g.Clear(Color.Transparent);
+        }
+
+        public void ResetPos()
+        {
+            x = y = 0;
+        }
+
+
         public void DrawRect(int width, int height) { 
                   var Rect = new Rectangle(x, y, width, height);
 
@@ -54,7 +65,11 @@ namespace ShapeCreator
             }
         
         }
+       
+
+    
         
+    
 
          
         
