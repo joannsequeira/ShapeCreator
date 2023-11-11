@@ -17,7 +17,7 @@ namespace ShapeCreator
         {
             CList = new List<L>
             {
-                new L { CdRg = @"clearsc", Command = new Clearsc(shape)  }
+                new L { CdRg = @"clearsc", Command = new ClearScreen(shape)  }
             };
 
         }
