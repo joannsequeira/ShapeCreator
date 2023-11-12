@@ -15,13 +15,16 @@ namespace ShapeCreator
     public partial class Form1 : Form
     {
 
-        Bitmap b;
-        Shapes = new Shape(Graphics.FromImage(OutputBitmap));
-        cmdList = new CmdLists(Shapes);
+        private Bitmap b;
+        private Shape Shapes;
+        private CmdLists cmdList;
+
 
         public Form1()
         {
             InitializeComponent();
+            Shapes = new Shape(Graphics.FromImage(b));
+            cmdList = new CmdLists(Shapes);
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace ShapeCreator
 {
-    public interface Cmd
+    public interface ICmd
     {
         void Excecute(GroupCollection group);
     }

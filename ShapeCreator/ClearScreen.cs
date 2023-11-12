@@ -10,7 +10,7 @@ namespace ShapeCreator
     public class ClearScreen : TrialBase
     {
 
-        public ClearScreen(Shape sh) : base(sh)
+        public ClearScreen(Shape shape) : base(shape)
         {
 
         }

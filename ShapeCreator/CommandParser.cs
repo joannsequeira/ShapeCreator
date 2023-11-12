@@ -5,19 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace ShapeCreator
 {
 
     public class CmdLists
     {
-        public List<L> CList { get; internal set; }
+        public List<CommandEntry> CList { get; internal set; }
 
         public CmdLists(Shape shape)
         {
-            CList = new List<L>
+            CList = new List<CommandEntry>
             {
-                new L { CdRg = @"clearsc", Command = new ClearScreen(shape)  }
+                new CommandEntry { CmdRg = @"clearsc", Command = new ClearScreen(shape)  }
             };
 
         }
@@ -29,36 +30,45 @@ namespace ShapeCreator
 
     }
 
+    public class CommandEntry
+    {
+        public string CmdRg { get; set; }
+        public ICmd Command { get; set; }
+    }
+
     public static class CommandParser
     {
-        public static void Parse(string command, List<L> cmdList)
+
+        public static void Parse(string command, List<CommandEntry> cmdList)
         {
-           var similar = false;
-            cmdList.ForEach(L =>
+            bool similar = false;
+            foreach (var entry in cmdList)
             {
-                var com = Regex.Match(command);
-                if (command.Success)
+                var match = Regex.Match(command, entry.CmdRg);
+                if (match.Success)
                 {
-
+                    entry.Command.Excecute(match.Groups);
                     similar = true;
-
-
+                    break;
                 }
-            });
+            }
+
             if (!similar)
                 throw new InvalidDataException("Command not valid");
-
-
         }
-    } 
-
-
-
-
-
-
-
+    }
 }
+
+
+
+    
+
+
+
+
+
+            
+    
 
     
     

@@ -55,8 +55,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cmd.cs" />
-    <Compile Include="L.cs" />
+    <Compile Include="ICmd.cs" />
     <Compile Include="MainShape.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

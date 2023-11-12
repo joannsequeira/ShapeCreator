@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace ShapeCreator
 {
-    public abstract class TrialBase : Cmd
+    public abstract class TrialBase : ICmd 
     {
         
 
@@ -16,6 +16,11 @@ namespace ShapeCreator
         protected TrialBase(Shape sh)
         {
             Shapes = sh;
+        }
+
+        public void Excecute(GroupCollection group)
+        {
+            throw new NotImplementedException();
         }
 
         public abstract void Execute(GroupCollection @group);
