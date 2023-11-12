@@ -40,7 +40,14 @@ namespace ShapeCreator
         {
             var colr = Color.FromName(color);
             pn = new Pen(colr, 3);
-            sb = new SolidBrush(colr);
+           
+        }
+
+        public void BrushChange(String color)
+        {
+            var colr = Color.FromName(color);
+            
+           sb = new SolidBrush(colr);
         }
 
         public void Clearsc()
@@ -57,15 +64,28 @@ namespace ShapeCreator
         public void DrawRect(int width, int height) { 
                   var rect = new Rectangle(x, y, width, height);
 
-            //if (oil)
-            //{
+            if (oil)
+            {
                 g.FillRectangle(sb, rect);
-            //}
-
-            //else
-                //g.FillEllipse(pn, rect);
             }
+
+            else
+                
+            g.DrawRectangle(pn, rect);
+        }
+
+        public void FillShape(bool oilp)
+        {
+            oil = oilp;
+        }
+
+
+
+
+         
         
+
+
         }
 
     }

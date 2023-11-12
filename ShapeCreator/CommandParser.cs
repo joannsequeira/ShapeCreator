@@ -19,7 +19,10 @@ namespace ShapeCreator
             CList = new List<CommandEntry>
             {
                 new CommandEntry { CmdRg = @"clearsc", Command = new ClearScreen(shape)  },
-                new CommandEntry { CmdRg = @"drawRect (\d+) (\d+)", Command = new RectClass(shape)  }
+                new CommandEntry { CmdRg = @"drawRect (\d+) (\d+)", Command = new RectClass(shape)  },
+                new CommandEntry { CmdRg = @"colorin (true|false)", Command = new FillShape(shape)} ,
+                //new CommandEntry { CmdRg = @"ResetPos", Command = new ResetPos(shape)},
+                new CommandEntry { CmdRg = @"PenChange (\w+)", Command = new PenChange(shape)}
 
             };
 

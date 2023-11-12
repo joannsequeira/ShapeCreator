@@ -42,7 +42,7 @@
             // 
             this.Execution.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.Execution.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.Execution.Location = new System.Drawing.Point(351, 400);
+            this.Execution.Location = new System.Drawing.Point(360, 345);
             this.Execution.Name = "Execution";
             this.Execution.Size = new System.Drawing.Size(75, 23);
             this.Execution.TabIndex = 0;
@@ -70,7 +70,7 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(39, 374);
+            this.textBox2.Location = new System.Drawing.Point(39, 400);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(365, 20);
             this.textBox2.TabIndex = 3;
