@@ -12,21 +12,21 @@ namespace ShapeCreator
 
     public class CmdLists
     {
-        public List<CommandEntry> CList { get; internal set; }
+        public List<CommandEntry> CList { get; internal set; } //stores list of commands
 
-        public CmdLists(Shape shape)
+        public CmdLists(Shape shape) //constructor used for command intialisation
         {
             CList = new List<CommandEntry>
             {
-                new CommandEntry { CmdRg = @"clearsc", Command = new ClearScreen(shape)  },
-                new CommandEntry { CmdRg = @"drawRect (\d+) (\d+)", Command = new RectClass(shape)  },
-                new CommandEntry { CmdRg = @"colorin (true|false)", Command = new FillShape(shape)} ,
-                new CommandEntry { CmdRg = @"ResetPos", Command = new ResetPos(shape)},
-                new CommandEntry { CmdRg = @"penChange (\w+)", Command = new PenChange(shape)},
-                new CommandEntry { CmdRg = @"brushChange (\w+)", Command = new BrushChange(shape)},
-                new CommandEntry { CmdRg = @"drawCirc (\d+)", Command = new CircClass(shape)},
-                new CommandEntry { CmdRg = @"drawTo (\d+) (\d+)", Command = new DrawTo(shape)},
-                new CommandEntry { CmdRg = @"moveTo (\d+) (\d+)", Command = new PenPos(shape)},
+                new CommandEntry { CmdRg = @"clearsc", Command = new ClearScreen(shape)  },  //Clear Screen
+                new CommandEntry { CmdRg = @"drawRect (\d+) (\d+)", Command = new RectClass(shape)  },  //Draw Rectangle
+                new CommandEntry { CmdRg = @"colorin (true|false)", Command = new FillShape(shape)} ,  //Fill Shape
+                new CommandEntry { CmdRg = @"ResetPos", Command = new ResetPos(shape)},  //Reset Pointer
+                new CommandEntry { CmdRg = @"penChange (\w+)", Command = new PenChange(shape)}, //Change color of Pen
+                new CommandEntry { CmdRg = @"brushChange (\w+)", Command = new BrushChange(shape)}, //Change color of Brush
+                new CommandEntry { CmdRg = @"drawCirc (\d+)", Command = new CircClass(shape)},  //Draw Circle
+                new CommandEntry { CmdRg = @"drawTo (\d+) (\d+)", Command = new DrawTo(shape)}, //Draw Line
+                new CommandEntry { CmdRg = @"moveTo (\d+) (\d+)", Command = new PenPos(shape)}, //Move pointer
 
 
             };
@@ -35,7 +35,7 @@ namespace ShapeCreator
 
         public void Parse(string com)
         {
-            CommandParser.Parse(com, CList);
+            CommandParser.Parse(com, CList);  //parse coammand using the specified list
         }
 
     }
@@ -54,17 +54,17 @@ namespace ShapeCreator
             bool similar = false;
             foreach (var entry in cmdList)
             {
-                var match = Regex.Match(command, entry.CmdRg);
+                var match = Regex.Match(command, entry.CmdRg); //matching command to the regular expression pattern
                 if (match.Success)
                 {
-                    entry.Command.Excecute(match.Groups);
+                    entry.Command.Excecute(match.Groups);  //execute the command if found
                     similar = true;
                     break;
                 }
             }
 
             if (!similar)
-                throw new InvalidDataException("Command not valid");
+                throw new InvalidDataException("Command not valid");  //show error message if not found or matched
         }
     }
 }

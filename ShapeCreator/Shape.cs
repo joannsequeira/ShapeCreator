@@ -17,7 +17,7 @@ namespace ShapeCreator
         int x, y;
         private bool oil = false;
         SolidBrush sb;
-        private int radius;
+        
 
         public Shape(Graphics g)
 
@@ -29,70 +29,70 @@ namespace ShapeCreator
             sb = new SolidBrush(Color.Black);
         }
 
-        public void PenPos(int x, int y)
+        public void PenPos(int x, int y)  //Method to change cursor pos
         {
 
             this.x = x;
             this.y = y;
         }
 
-        public void PenChange(String color)
+        public void PenChange(String color)  //Change pen color
         {
             var colr = Color.FromName(color);
             pn = new Pen(colr, 3);
 
         }
 
-        public void BrushChange(String color)
+        public void BrushChange(String color)  //Change brush color
         {
             var colr = Color.FromName(color);
 
             sb = new SolidBrush(colr);
         }
 
-        public void Clearsc()
+        public void Clearsc() //Clearing the screen
         {
-            g.Clear(Color.Transparent);
+            g.Clear(Color.Transparent);  
         }
 
-        public void ResetPos()
+        public void ResetPos()  //Reset the cursor to 0,0
         {
             x = y = 0;
         }
 
 
-        public void DrawRect(int width, int height) {
+        public void DrawRect(int width, int height) {   //Draw Rectangle
             var rect = new Rectangle(x, y, width, height);
 
-            if (oil)
+            if (oil)   
             {
-                g.FillRectangle(sb, rect);
+                g.FillRectangle(sb, rect); //if oil true, Fill rectangle
             }
 
             else
 
-                g.DrawRectangle(pn, rect);
+                g.DrawRectangle(pn, rect); //if oil false, only draw outline 
         }
 
         public void FillShape(bool oilp)
         {
-            oil = oilp;
+            oil = oilp;  //Set value of oil from Fill command
         }
 
-        public void DrawCirc(int radius)
+        public void DrawCirc(int radius) //Draw Circle
         {
 
             if (oil)
             {
-                g.FillEllipse(sb, x, y, 2 * radius, 2 * radius);
+                g.FillEllipse(sb, x, y, 2 * radius, 2 * radius); //if oil true, Fill Circle
             }
             else
             {
-                g.DrawEllipse(pn, x, y, 2 * radius, 2 * radius);
+                g.DrawEllipse(pn, x, y, 2 * radius, 2 * radius); //if oil false, draw only outline
             }
         }
 
-        public void DrawTo(int a, int b)
+        public void DrawTo(int a, int b)  //Draw line to specified points
         {
             g.DrawLine(pn,x, y, a,b);
             x = a;
