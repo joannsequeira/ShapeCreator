@@ -30,7 +30,16 @@ namespace ShapeCreator
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+            string[] lines = textBox1.Lines;
+
+            foreach (var line in lines)
+            {
+                if(!string.IsNullOrEmpty(line))
+                {
+                    parseCom(line.Trim());
+                    Refresh();
+                }
+            }
         }
 
 
@@ -101,5 +110,23 @@ namespace ShapeCreator
             }
         }
 
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (textBox1.Text.EndsWith("run"))
+                {
+                    string TextLines = textBox1.Text.Trim().Substring(0, textBox1.Text.Length - 3);
+                    string[] lines = TextLines.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var line in lines)
+                    {
+                        
+                            parseCom(line.Trim());
+                            Refresh();
+                      
+                    }
+                }
+            }
+        }
     }
 }
