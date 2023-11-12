@@ -39,8 +39,51 @@ namespace ShapeCreator
         }
     }
 
+    public class BrushChange : TrialBase
+    {
 
-   
+        public BrushChange(Shape shape) : base(shape)
+        {
+
+        }
+
+        public override void Excecute(GroupCollection group)
+        {
+            var colr = group[1].Value;
+            Shapes.BrushChange(colr);
+        }
+    }
+
+    public class DrawTo : TrialBase
+    {
+
+        public DrawTo(Shape shape) : base(shape)
+        {
+
+        }
+
+        public override void Excecute(GroupCollection group)
+        {
+            Shapes.DrawTo(IntParseGroup(group, 1), IntParseGroup(group, 2));
+        }
+    }
+
+    public class PenPos : TrialBase
+    {
+
+        public PenPos(Shape shape) : base(shape)
+        {
+
+        }
+
+        public override void Excecute(GroupCollection group)
+        {
+            Shapes.PenPos(IntParseGroup(group, 1), IntParseGroup(group, 2));
+        }
+    }
+
+
+
 
 
 }

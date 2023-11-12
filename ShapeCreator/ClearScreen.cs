@@ -20,4 +20,23 @@ namespace ShapeCreator
             Shapes.Clearsc();
         }
     }
+
+    public class ResetPos : TrialBase
+    {
+
+        public ResetPos(Shape shape) : base(shape)
+        {
+
+        }
+
+        public override void Excecute(GroupCollection group)
+        {
+            Shapes.ResetPos();
+        }
+    }
+
+
+
+
+
 }

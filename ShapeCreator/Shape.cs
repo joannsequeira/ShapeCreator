@@ -17,7 +17,7 @@ namespace ShapeCreator
         int x, y;
         private bool oil = false;
         SolidBrush sb;
-
+        private int radius;
 
         public Shape(Graphics g)
 
@@ -40,14 +40,14 @@ namespace ShapeCreator
         {
             var colr = Color.FromName(color);
             pn = new Pen(colr, 3);
-           
+
         }
 
         public void BrushChange(String color)
         {
             var colr = Color.FromName(color);
-            
-           sb = new SolidBrush(colr);
+
+            sb = new SolidBrush(colr);
         }
 
         public void Clearsc()
@@ -61,8 +61,8 @@ namespace ShapeCreator
         }
 
 
-        public void DrawRect(int width, int height) { 
-                  var rect = new Rectangle(x, y, width, height);
+        public void DrawRect(int width, int height) {
+            var rect = new Rectangle(x, y, width, height);
 
             if (oil)
             {
@@ -70,8 +70,8 @@ namespace ShapeCreator
             }
 
             else
-                
-            g.DrawRectangle(pn, rect);
+
+                g.DrawRectangle(pn, rect);
         }
 
         public void FillShape(bool oilp)
@@ -79,14 +79,28 @@ namespace ShapeCreator
             oil = oilp;
         }
 
+        public void DrawCirc(int radius)
+        {
 
-
-
-         
-        
-
-
+            if (oil)
+            {
+                g.FillEllipse(sb, x, y, 2 * radius, 2 * radius);
+            }
+            else
+            {
+                g.DrawEllipse(pn, x, y, 2 * radius, 2 * radius);
+            }
         }
+
+        public void DrawTo(int a, int b)
+        {
+            g.DrawLine(pn,x, y, a,b);
+            x = a;
+            y = b;
+        }
+
+        
+    }
 
     }
 

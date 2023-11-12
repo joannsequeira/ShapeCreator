@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CircClass.cs" />
     <Compile Include="ClearScreen.cs" />
     <Compile Include="FormSet.cs" />
     <Compile Include="CommandParser.cs" />

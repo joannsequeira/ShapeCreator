@@ -21,8 +21,13 @@ namespace ShapeCreator
                 new CommandEntry { CmdRg = @"clearsc", Command = new ClearScreen(shape)  },
                 new CommandEntry { CmdRg = @"drawRect (\d+) (\d+)", Command = new RectClass(shape)  },
                 new CommandEntry { CmdRg = @"colorin (true|false)", Command = new FillShape(shape)} ,
-                //new CommandEntry { CmdRg = @"ResetPos", Command = new ResetPos(shape)},
-                new CommandEntry { CmdRg = @"PenChange (\w+)", Command = new PenChange(shape)}
+                new CommandEntry { CmdRg = @"ResetPos", Command = new ResetPos(shape)},
+                new CommandEntry { CmdRg = @"penChange (\w+)", Command = new PenChange(shape)},
+                new CommandEntry { CmdRg = @"brushChange (\w+)", Command = new BrushChange(shape)},
+                new CommandEntry { CmdRg = @"drawCirc (\d+)", Command = new CircClass(shape)},
+                new CommandEntry { CmdRg = @"drawTo (\d+) (\d+)", Command = new DrawTo(shape)},
+                new CommandEntry { CmdRg = @"moveTo (\d+) (\d+)", Command = new PenPos(shape)},
+
 
             };
 
