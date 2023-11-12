@@ -18,7 +18,9 @@ namespace ShapeCreator
         {
             CList = new List<CommandEntry>
             {
-                new CommandEntry { CmdRg = @"clearsc", Command = new ClearScreen(shape)  }
+                new CommandEntry { CmdRg = @"clearsc", Command = new ClearScreen(shape)  },
+                new CommandEntry { CmdRg = @"drawRect (\d+) (\d+)", Command = new RectClass(shape)  }
+
             };
 
         }

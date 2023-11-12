@@ -15,7 +15,7 @@ namespace ShapeCreator
 
         }
 
-        public override void Execute(GroupCollection group)
+        public override void Excecute(GroupCollection group)
         {
             Shapes.Clearsc();
         }

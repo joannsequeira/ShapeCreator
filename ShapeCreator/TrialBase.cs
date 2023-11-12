@@ -18,12 +18,9 @@ namespace ShapeCreator
             Shapes = sh;
         }
 
-        public void Excecute(GroupCollection group)
-        {
-            throw new NotImplementedException();
-        }
+        
 
-        public abstract void Execute(GroupCollection @group);
+        public abstract void Excecute(GroupCollection @group);
 
         protected int IntParseGroup(GroupCollection @group, int id)
         {

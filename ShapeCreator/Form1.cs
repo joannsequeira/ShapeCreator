@@ -23,6 +23,7 @@ namespace ShapeCreator
         public Form1()
         {
             InitializeComponent();
+            b = new Bitmap(Width, Height);
             Shapes = new Shape(Graphics.FromImage(b));
             cmdList = new CmdLists(Shapes);
         }
@@ -65,10 +66,7 @@ namespace ShapeCreator
                 Graphics g = e.Graphics;
                 g.DrawImageUnscaled(b, 0, 0);
                
-               
-
-
-          }
+        }
 
         private void textBox2_KeyDown(object sender, KeyEventArgs e)
         {

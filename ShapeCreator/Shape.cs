@@ -16,7 +16,7 @@ namespace ShapeCreator
         Pen pn;
         int x, y;
         private bool oil = false;
-        SolidBrush sb = null;
+        SolidBrush sb;
 
 
         public Shape(Graphics g)
@@ -26,6 +26,7 @@ namespace ShapeCreator
             x = 0;
             y = 0;
             pn = new Pen(Color.Black, 3);
+            sb = new SolidBrush(Color.Black);
         }
 
         public void PenPos(int x, int y)
@@ -54,28 +55,18 @@ namespace ShapeCreator
 
 
         public void DrawRect(int width, int height) { 
-                  var Rect = new Rectangle(x, y, width, height);
+                  var rect = new Rectangle(x, y, width, height);
 
-            if (oil)
-            {
-                g.FillRectangle(sb, Rect);
-            }
+            //if (oil)
+            //{
+                g.FillRectangle(sb, rect);
+            //}
 
-            else
-                g.FillEllipse(sb, Rect);
+            //else
+                //g.FillEllipse(pn, rect);
             }
         
         }
-       
-
-    
-        
-    
-
-         
-        
-       
-
 
     }
 
