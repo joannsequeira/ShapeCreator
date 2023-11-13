@@ -31,10 +31,20 @@ namespace ShapeCreator
         private void button1_Click(object sender, EventArgs e)
         {
             string[] lines = textBox1.Lines;
+            string[] lined = textBox2.Lines;
 
             foreach (var line in lines)
             {
                 if(!string.IsNullOrEmpty(line))
+                {
+                    parseCom(line.Trim());
+                    Refresh();
+                }
+            }
+
+            foreach (var line in lined)
+            {
+                if (!string.IsNullOrEmpty(line))
                 {
                     parseCom(line.Trim());
                     Refresh();
@@ -59,7 +69,7 @@ namespace ShapeCreator
         //Button saves the text in the textbox to a file in specified path 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            StreamWriter writeIt = new StreamWriter(@"P:\My Documents\Desktop\SaveTxt.Txt");
+            StreamWriter writeIt = new StreamWriter(@"P:\My Documents\Desktop\ASE DEMO\SaveTxt.Txt");  //path to save file
             writeIt.Write(textBox2.Text);
             writeIt.Write(textBox1.Text);
             writeIt.Close();
@@ -114,10 +124,10 @@ namespace ShapeCreator
         {
             if (e.KeyCode == Keys.Enter)
             {
-                if (textBox1.Text.EndsWith("run"))
+                if (textBox1.Text.EndsWith("run"))  //if the last line ends with run and enter is pressed 
                 {
                     string TextLines = textBox1.Text.Trim().Substring(0, textBox1.Text.Length - 3);
-                    string[] lines = TextLines.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] lines = TextLines.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries); //lines are split to individual command lines
                     foreach (var line in lines)
                     {
                         

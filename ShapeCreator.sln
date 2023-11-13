@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShapeCreator", "ShapeCreator\ShapeCreator.csproj", "{8A91B139-1AAF-4687-A34B-F18517CADB00}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{5956721F-F52B-40F9-A01C-71074AB18E4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{8A91B139-1AAF-4687-A34B-F18517CADB00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A91B139-1AAF-4687-A34B-F18517CADB00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A91B139-1AAF-4687-A34B-F18517CADB00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5956721F-F52B-40F9-A01C-71074AB18E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5956721F-F52B-40F9-A01C-71074AB18E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5956721F-F52B-40F9-A01C-71074AB18E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5956721F-F52B-40F9-A01C-71074AB18E4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
