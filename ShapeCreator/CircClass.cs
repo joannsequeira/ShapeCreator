@@ -18,6 +18,10 @@ namespace ShapeCreator
         //implementing methods of the base class
         public override void Excecute(GroupCollection group)
         {
+            if (group.Count < 2)
+            {
+                throw new ArgumentException("Insufficient Parameters");
+            }
             Shapes.DrawCirc(int.Parse(group[1].Value)); //extracting value of radius from the regular expression groups
         }
     }

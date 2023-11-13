@@ -21,6 +21,10 @@ namespace ShapeCreator
 
         public override void Excecute(GroupCollection @group) //Implementing execute method from the inherited class
         {
+            if (group.Count < 3)
+            {
+                throw new ArgumentException("Insufficient Parameters");
+            }
             Shapes.DrawRect(IntParseGroup(group,1), IntParseGroup(group, 2)); //getting width, height from reg. expression groups
 
         }

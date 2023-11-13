@@ -72,6 +72,10 @@ namespace ShapeCreator
 
         public override void Excecute(GroupCollection group)
         {
+            if (group.Count < 3)
+            {
+                throw new ArgumentException("Insufficient Parameters");
+            }
             Shapes.DrawTo(IntParseGroup(group, 1), IntParseGroup(group, 2));
         }
     }
@@ -86,6 +90,10 @@ namespace ShapeCreator
 
         public override void Excecute(GroupCollection group)
         {
+            if (group.Count < 3)
+            {
+                throw new ArgumentException("Insufficient Parameters");
+            }
             Shapes.PenPos(IntParseGroup(group, 1), IntParseGroup(group, 2));
         }
     }
