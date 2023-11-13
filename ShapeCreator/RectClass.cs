@@ -25,12 +25,5 @@ namespace ShapeCreator
 
         }
 
-
-
-
-
-
-
-
     }
 }

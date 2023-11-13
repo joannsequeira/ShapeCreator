@@ -99,6 +99,20 @@ namespace ShapeCreator
             y = b;
         }
 
+        public void DrawTri(int i, int j, int k)
+        {
+            Point[] points = { new Point(x,y), new Point(x + i, y), new Point(x +j, y+k) //form the triangle vertices cosidering x,y pos
+
+           };
+
+            if(oil)
+            {
+                g.FillPolygon(sb, points);
+            }
+            else
+                g.DrawPolygon(pn, points);
+        }
+
         
     }
 

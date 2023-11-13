@@ -42,7 +42,7 @@
             // 
             this.Execution.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.Execution.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.Execution.Location = new System.Drawing.Point(360, 345);
+            this.Execution.Location = new System.Drawing.Point(320, 345);
             this.Execution.Name = "Execution";
             this.Execution.Size = new System.Drawing.Size(75, 23);
             this.Execution.TabIndex = 0;
@@ -53,9 +53,9 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.pictureBox1.Location = new System.Drawing.Point(463, 16);
+            this.pictureBox1.Location = new System.Drawing.Point(410, 16);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(327, 424);
+            this.pictureBox1.Size = new System.Drawing.Size(448, 463);
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
@@ -114,7 +114,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(870, 491);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
