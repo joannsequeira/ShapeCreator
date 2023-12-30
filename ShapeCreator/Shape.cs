@@ -116,5 +116,9 @@ namespace ShapeCreator
         
     }
 
+    public void TriLines(String program)
+    {
+
     }
 
+    }
