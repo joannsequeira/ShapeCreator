@@ -28,8 +28,9 @@ namespace ShapeCreator
                 new CommandEntry { CmdRg = @"drawTo (\d+) (\d+)", Command = new DrawTo(shape)}, //Draw Line
                 new CommandEntry { CmdRg = @"moveTo (\d+) (\d+)", Command = new PenPos(shape)}, //Move pointer
                 new CommandEntry { CmdRg = @"drawTri (\d+) (\d+) (\d+)", Command = new TriClass(shape)}, //Draw Triangle
-                new CommandEntry { CmdRg = @"If (\w+) == (\d+)", Command = new IfCond(shape)}
-
+                new CommandEntry { CmdRg = @"If (\w+)", Command = new IfCond(shape)},
+                //new CommandEntry { CmdRg = @"setVar (\w+) (\d+)", Command = setVar(shape)},
+                new CommandEntry { CmdRg = @"While (.+)", Command = WhileCond(shape)},
             };
 
         }
@@ -58,7 +59,17 @@ namespace ShapeCreator
                 var match = Regex.Match(command, entry.CmdRg); //matching command to the regular expression pattern
                 if (match.Success)
                 {
-                    entry.Command.Excecute(match.Groups);  //execute the command if found
+                    if (entry.Command is IfCond ifcond)
+                    {
+                        IfCond.Excecute(match.Groups, command);
+
+                    }
+                    else if (entry.Command is WhileCond whilecond)
+                    {
+                        WhileCond.Excecute(match.Groups, command);
+                    }
+                    else
+                    { entry.Command.Excecute(match.Groups); } //execute the command if found
                     similar = true;
                     break;
                 }

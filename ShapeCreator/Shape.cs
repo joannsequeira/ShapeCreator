@@ -17,12 +17,15 @@ namespace ShapeCreator
         int x, y;
         private bool oil = false;
         SolidBrush sb;
-        
+        public Dictionary<string, int> vars = new Dictionary<string, int>();
+        public CmdLists cmdLists;
+
 
         public Shape(Graphics g)
 
         {
             this.g = g;
+            this.cmdLists = cmdLists;
             x = 0;
             y = 0;
             pn = new Pen(Color.Black, 3);
@@ -113,12 +116,36 @@ namespace ShapeCreator
                 g.DrawPolygon(pn, points);
         }
 
+        public void SetVar(string name, int value)
+        {
+            vars[name] = value;
+        }
+
+        public int GetVar(string name)
+        {
+            if (vars.TryGetValue(name, out int value))
+            {
+                return value;
+            }
+            throw new ArgumentException($"Variable {name} not found");
+        }
+
+
+        public void InsideIf(string command)
+        {
+            string block = command.Substring(command.IndexOf("If") + 2);
+            string[] commands = block.Split('\n', (char)StringSplitOptions.RemoveEmptyEntries);
+
+            foreach(var cmd in commands)
+            {
+                CommandParser.Parse(cmd.Trim(), cmdLists.CList);
+            }
+        }
+
+    }
         
-    }
-
-    public void TriLines(String program)
-    {
 
     }
+    
 
-    }
+
