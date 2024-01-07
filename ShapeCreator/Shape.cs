@@ -20,12 +20,10 @@ namespace ShapeCreator
         public Dictionary<string, int> vars = new Dictionary<string, int>();
         public CmdLists cmdLists;
 
-
         public Shape(Graphics g)
 
         {
             this.g = g;
-            this.cmdLists = cmdLists;
             x = 0;
             y = 0;
             pn = new Pen(Color.Black, 3);
@@ -118,7 +116,16 @@ namespace ShapeCreator
 
         public void SetVar(string name, int value)
         {
-            vars[name] = value;
+            if (vars.ContainsKey(name))
+            {
+                vars[name] = value;
+            }
+
+
+            else
+            {
+                vars.Add(name, value);
+            }
         }
 
         public int GetVar(string name)
@@ -131,16 +138,7 @@ namespace ShapeCreator
         }
 
 
-        public void InsideIf(string command)
-        {
-            string block = command.Substring(command.IndexOf("If") + 2);
-            string[] commands = block.Split('\n', (char)StringSplitOptions.RemoveEmptyEntries);
-
-            foreach(var cmd in commands)
-            {
-                CommandParser.Parse(cmd.Trim(), cmdLists.CList);
-            }
-        }
+        
 
     }
         

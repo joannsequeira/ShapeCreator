@@ -30,9 +30,9 @@ namespace ShapeCreator
                 new CommandEntry { CmdRg = @"drawTri (\d+) (\d+) (\d+)", Command = new TriClass(shape)}, //Draw Triangle
                 new CommandEntry { CmdRg = @"If (\w+)", Command = new IfCond(shape)},
                 //new CommandEntry { CmdRg = @"setVar (\w+) (\d+)", Command = setVar(shape)},
-                new CommandEntry { CmdRg = @"While (.+)", Command = WhileCond(shape)},
+                //new CommandEntry { CmdRg = @"While (.+)", Command = WhileCond(shape)},
             };
-
+           
         }
 
         public void Parse(string com)
@@ -59,17 +59,17 @@ namespace ShapeCreator
                 var match = Regex.Match(command, entry.CmdRg); //matching command to the regular expression pattern
                 if (match.Success)
                 {
-                    if (entry.Command is IfCond ifcond)
-                    {
-                        IfCond.Excecute(match.Groups, command);
+                    //if (entry.Command is IfCond ifcond)
+                    //{
+                        //ifcond.Excecute(match.Groups, command);
 
-                    }
-                    else if (entry.Command is WhileCond whilecond)
-                    {
-                        WhileCond.Excecute(match.Groups, command);
-                    }
-                    else
-                    { entry.Command.Excecute(match.Groups); } //execute the command if found
+                    //}
+                    //else if (entry.Command is WhileCond whilecond)
+                    //{
+                        //WhileCond.Excecute(match.Groups, command);
+                    //}
+                    //else
+                     entry.Command.Excecute(match.Groups);  //execute the command if found
                     similar = true;
                     break;
                 }

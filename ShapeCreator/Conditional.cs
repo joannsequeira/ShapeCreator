@@ -8,67 +8,71 @@ using System.Threading.Tasks;
 
 namespace ShapeCreator
 {
-    
-
-       
 
 
-public class IfCond : ICmd
+
+
+
+    public class IfCond : ICmd
     {
         private readonly Shape shape;
 
         public IfCond(Shape shape)
         {
             this.shape = shape;
+
         }
 
-        public void Excecute(GroupCollection group, string command) 
+        public void Excecute(GroupCollection group)
+        {
+
+        }
+
+        public void Excecute(GroupCollection group, string command)
         {
             string condition = group[1].Value;
+            bool condRes = CondEval(condition);
 
-            if(CondEval(condition))
+            if (condRes)
             {
-                shape.InsideIf(command);
+                InsideIf(group[2].Value);
             }
         }
 
         private bool CondEval(string condition)
         {
-            int compVal = ExtractVal(condition);
-            int values = shape.GetVar("Var");
-
-            switch (condition)
+            var assignmentMatch = Regex.Match(condition, @"(\w+) = (\d+)");
+            if (assignmentMatch.Success)
             {
-                case "Var == Threshold":
-                    return values == compVal;
-                case "Var < Threshold":
-                    return values < compVal;
-                case "Var > Threshold":
-                    return values > compVal;
+                string variableName = assignmentMatch.Groups[1].Value;
+                int variableValue = int.Parse(assignmentMatch.Groups[2].Value);
 
-                default:
-                    throw new ArgumentException($"Not supported");
-
+                shape.SetVar(variableName, variableValue);
+                return true;
             }
-        }
 
-        private int ExtractVal(string condition)
-        {
-            var match = Regex.Match(condition, @"([<>]=?) (\d+)");  //Operators for the condition are assessed to retrive comparison value
-            if (match.Success)
+
+
+
+            var match = Regex.Match(condition, @" (\w+)([<>]=?) (\d+)");  //Operators for the condition are assessed to retrive comparison value
+            string name = match.Groups[1].Value;
+            string Operator = match.Groups[2].Value;
+
+            if (int.TryParse(match.Groups[3].Value, out int compVal))
             {
-                string Operator = match.Groups[1].Value;
-                int threshold = int.Parse(match.Groups[2].Value);
+
+                int value = shape.GetVar(name);
+
 
                 switch (Operator)
                 {
                     case "==":
-                        return threshold;
+                        return value == compVal;
                     case "<":
-                        return threshold - 1; // For '<', consider a value just below the threshold
+                        return value < compVal; // For '<', consider a value just below the threshold
                     case ">":
-                        return threshold + 1; // For '>', consider a value just above the threshold
-                   
+                        return value > compVal; // For '>', consider a value just above the threshold
+
                     default:
                         throw new ArgumentException($"Unsupported comparison operator: {Operator}");
                 }
@@ -76,8 +80,16 @@ public class IfCond : ICmd
             throw new ArgumentException($"Unable to extract threshold from condition: {condition}");
         }
 
+        public void InsideIf(string block)
+        {
+
+            string[] commands = block.Split('\n', (char)StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var cmd in commands)
+            {
+                CommandParser.Parse(cmd.Trim(), shape.cmdLists.CList);
+            }
+        }
     }
-
-    
-
 }
+
