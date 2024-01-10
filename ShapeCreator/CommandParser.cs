@@ -14,7 +14,7 @@ namespace ShapeCreator
     {
         
 
-        public List<CommandEntry> CList { get; internal set; } //stores list of commands
+       /* public List<CommandEntry> CList { get; internal set; } //stores list of commands
 
         public CmdLists(Shape shape) //constructor used for command intialisation
         {
@@ -81,7 +81,10 @@ namespace ShapeCreator
                 throw new InvalidDataException("Command not valid");  //show error message if not found or matched
         }
     }
-}
+} */
+
+
+
 
 
 

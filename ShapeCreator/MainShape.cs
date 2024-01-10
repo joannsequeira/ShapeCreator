@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -15,93 +17,33 @@ using System.Threading.Tasks;
 
 namespace ShapeCreator
 {
-    public class FillShape : ICmd
+    public abstract class FillShape : ICmd
     {
-        private readonly Shape shape;
+        protected int x, y;
 
-        public FillShape(Shape shape) 
+        public FillShape(int x, int y)
         {
-            this.shape = shape;
+            this.x = x;
+            this.y = y;
         }
 
-        public void Excecute(GroupCollection group) {
-            var oil = group[1].Value;
-            shape.FillShape(oil == "true");
 
+        public FillShape()
+        { }
+
+        public abstract void ShapeDrawer(Graphics g, Pen p, Brush b);
+
+        public virtual void SetTriangle(int x, int y, Point[] pt);
+
+        public override string ToString()
+        {
+            return base.ToString() + "  " + this.x + ", " + this.y + ":";
         }
+
+
+        void ListShape(params int[] listShape);
+
     }
-
-
-    public class PenChange : TrialBase
-    {
-        
-        public PenChange(Shape shape) : base(shape)
-        {
-
-        }
-
-        public override void Excecute(GroupCollection group)
-        {
-            var colr = group[1].Value;
-            Shapes.PenChange(colr);
-        }
-    }
-
-    public class BrushChange : TrialBase
-    {
-
-        public BrushChange(Shape shape) : base(shape)
-        {
-
-        }
-
-        public override void Excecute(GroupCollection group)
-        {
-            var colr = group[1].Value;
-            Shapes.BrushChange(colr);
-        }
-    }
-
-    public class DrawTo : TrialBase
-    {
-
-        public DrawTo(Shape shape) : base(shape)
-        {
-
-        }
-
-        public override void Excecute(GroupCollection group)
-        {
-            if (group.Count < 3)
-            {
-                throw new ArgumentException("Insufficient Parameters");
-            }
-            Shapes.DrawTo(IntParseGroup(group, 1), IntParseGroup(group, 2));
-        }
-    }
-
-    public class PenPos : TrialBase
-    {
-
-        public PenPos(Shape shape) : base(shape)
-        {
-
-        }
-
-        public override void Excecute(GroupCollection group)
-        {
-            if (group.Count < 3)
-            {
-                throw new ArgumentException("Insufficient Parameters");
-            }
-            Shapes.PenPos(IntParseGroup(group, 1), IntParseGroup(group, 2));
-        }
-    }
-
-
-
-
-
 }
 
 
