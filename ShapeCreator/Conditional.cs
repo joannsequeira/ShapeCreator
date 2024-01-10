@@ -1,95 +1,105 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace ShapeCreator
 {
-
-
-
-
-
     public class IfCond : ICmd
     {
+        private readonly string condition;
+        private readonly CmdLists cmdLists;
         private readonly Shape shape;
 
-        public IfCond(Shape shape)
+        public IfCond(string condition, CmdLists cmdLists, Shape shape)
         {
+            this.condition = condition;
+            this.cmdLists = cmdLists;
             this.shape = shape;
-
         }
 
-        public void Excecute(GroupCollection group)
+        public void Excecute(GroupCollection groups)
         {
+            int threshold = ExtractThreshold(condition);
 
-        }
-
-        public void Excecute(GroupCollection group, string command)
-        {
-            string condition = group[1].Value;
-            bool condRes = CondEval(condition);
-
-            if (condRes)
+            // Extract the variable value from the dictionary
+            int varValue = 0;
+            if (shape.vars.TryGetValue("Var", out var existingValue))
             {
-                InsideIf(group[2].Value);
+                varValue = existingValue;
+            }
+
+            // Check the condition
+            bool conditionMet = CondEval(condition);
+
+            // Execute or skip the commands based on the condition
+            if (conditionMet)
+            {
+                InsideIf(condition);
             }
         }
 
         private bool CondEval(string condition)
         {
-            var assignmentMatch = Regex.Match(condition, @"(\w+) = (\d+)");
-            if (assignmentMatch.Success)
+            var match = Regex.Match(condition, @" (\w+)\s*([<>]=?)\s*(\d+)");
+            if (match.Success)
             {
-                string variableName = assignmentMatch.Groups[1].Value;
-                int variableValue = int.Parse(assignmentMatch.Groups[2].Value);
+                string name = match.Groups[1].Value;
+                string Operator = match.Groups[2].Value;
 
-                shape.SetVar(variableName, variableValue);
-                return true;
-            }
-
-
-
-
-            var match = Regex.Match(condition, @" (\w+)([<>]=?) (\d+)");  //Operators for the condition are assessed to retrive comparison value
-            string name = match.Groups[1].Value;
-            string Operator = match.Groups[2].Value;
-
-            if (int.TryParse(match.Groups[3].Value, out int compVal))
-            {
-
-                int value = shape.GetVar(name);
-
-
-                switch (Operator)
+                if (int.TryParse(match.Groups[3].Value, out int compVal))
                 {
-                    case "==":
-                        return value == compVal;
-                    case "<":
-                        return value < compVal; // For '<', consider a value just below the threshold
-                    case ">":
-                        return value > compVal; // For '>', consider a value just above the threshold
+                    int value = shape.GetVar(name);
 
-                    default:
-                        throw new ArgumentException($"Unsupported comparison operator: {Operator}");
+                    switch (Operator)
+                    {
+                        case "==":
+                            return value == compVal;
+                        case "<":
+                            return value < compVal;
+                        case ">":
+                            return value > compVal;
+                        default:
+                            throw new ArgumentException($"Unsupported comparison operator: {Operator}");
+                    }
                 }
             }
-            throw new ArgumentException($"Unable to extract threshold from condition: {condition}");
+
+            throw new ArgumentException($"Unable to evaluate condition: {condition}");
         }
 
-        public void InsideIf(string block)
+        private void InsideIf(string block)
         {
+            string[] commands = block.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-            string[] commands = block.Split('\n', (char)StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var cmd in commands)
             {
-                CommandParser.Parse(cmd.Trim(), shape.cmdLists.CList);
+                CommandParser.Parse(cmd.Trim(), cmdLists.CList);
             }
         }
+
+        private int ExtractThreshold(string condition)
+        {
+            var match = Regex.Match(condition, @"Var\s*([><=]+)\s*(\d+)");
+            if (match.Success)
+            {
+                string comparisonOperator = match.Groups[1].Value;
+                int threshold = int.Parse(match.Groups[2].Value);
+
+                // Perform the appropriate comparison based on the operator
+                switch (comparisonOperator)
+                {
+                    case "==": return threshold;
+                    case ">": return threshold + 1;
+                    case "<": return threshold - 1;
+                    default:
+                        throw new ArgumentException($"Unsupported comparison operator: {comparisonOperator}");
+                }
+            }
+
+            Console.WriteLine($"Unable to extract threshold from condition: {condition}");
+            throw new ArgumentException($"Unable to extract threshold from condition: {condition}");
+        }
+
     }
 }
-

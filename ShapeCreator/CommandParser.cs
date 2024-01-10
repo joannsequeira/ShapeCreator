@@ -12,6 +12,8 @@ namespace ShapeCreator
 
     public class CmdLists
     {
+        
+
         public List<CommandEntry> CList { get; internal set; } //stores list of commands
 
         public CmdLists(Shape shape) //constructor used for command intialisation
@@ -28,7 +30,7 @@ namespace ShapeCreator
                 new CommandEntry { CmdRg = @"drawTo (\d+) (\d+)", Command = new DrawTo(shape)}, //Draw Line
                 new CommandEntry { CmdRg = @"moveTo (\d+) (\d+)", Command = new PenPos(shape)}, //Move pointer
                 new CommandEntry { CmdRg = @"drawTri (\d+) (\d+) (\d+)", Command = new TriClass(shape)}, //Draw Triangle
-                new CommandEntry { CmdRg = @"If (\w+)", Command = new IfCond(shape)},
+                new CommandEntry { CmdRg = @"If (\w+)", Command = new IfCond("condition", this,shape)},
                 //new CommandEntry { CmdRg = @"setVar (\w+) (\d+)", Command = setVar(shape)},
                 //new CommandEntry { CmdRg = @"While (.+)", Command = WhileCond(shape)},
             };
