@@ -13,15 +13,22 @@ namespace ShapeCreator
         /// <summary>
         /// void Excecute(GroupCollection group);  //method that is implemented by classes using this interface
         /// </summary>
+        
         /// <param name="g"></param>
         /// <param name="p"></param>
         /// <param name="b"></param>
 
         void ShapeDrawer(Graphics g, Pen p, Brush b);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="listShape"></param>
+
+
         void ListShape(params int[] listShape);
 
-        void SetTriangle(int x, int y, Point[] pt);
+        //void SetTriangle(int x, int y, Point[] pt);
 
 
     }

@@ -9,23 +9,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace ShapeCreator
 {
     public partial class Form1 : Form
     {
-
-        private Bitmap b;
-        private Shape Shapes;
-        private CmdLists cmdList;
-
-
         public Form1()
         {
             InitializeComponent();
             b = new Bitmap(Width, Height);
             Shapes = new Shape(Graphics.FromImage(b));
-            cmdList = new CmdLists(Shapes);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -35,9 +29,9 @@ namespace ShapeCreator
 
             foreach (var line in lines)
             {
-                if(!string.IsNullOrEmpty(line))
+                if (!string.IsNullOrEmpty(line))
                 {
-                    parseCom(line.Trim());
+                    //parseCom(line.Trim());
                     Refresh();
                 }
             }
@@ -46,19 +40,19 @@ namespace ShapeCreator
             {
                 if (!string.IsNullOrEmpty(line))
                 {
-                    parseCom(line.Trim());
+                    //parseCom(line.Trim());
                     Refresh();
                 }
             }
         }
 
 
-      
+
         //Open a file and display in the textbox
         private void button2_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            if (ofd.ShowDialog()==DialogResult.OK)
+            if (ofd.ShowDialog() == DialogResult.OK)
             {
                 string textUse = File.ReadAllText(ofd.FileName);
                 textBox1.Text = textUse;
@@ -81,34 +75,35 @@ namespace ShapeCreator
             FormSet.ClearForm(this);
         }
 
-        
+
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             //display graphics on the bitmap
-                Graphics g = e.Graphics;
-                g.DrawImageUnscaled(b, 0, 0);
-               
+            Graphics g = e.Graphics;
+            g.DrawImageUnscaled(b, 0, 0);
+            //Excecuter(abc, strings, counter, g);
+
         }
 
         private void textBox2_KeyDown(object sender, KeyEventArgs e)
         {
             //when enter is pressed the command is parsed
-            if(e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
                 var com = textBox2.Text;
                 if (string.IsNullOrEmpty(com))
                     return;
-                parseCom(com);
+                //parseCom(com);
                 textBox2.Text = " ";
                 Refresh();
 
             }
         }
 
-        public void parseCom(string com)
+        /* public void parseCom(string com)
         {
             try
-            { 
+            {
                 cmdList.Parse(com); //parses the command entered using cmdList
 
             }
@@ -116,9 +111,9 @@ namespace ShapeCreator
             catch (InvalidDataException e)
             {
                 MessageBox.Show(e.Message, @"Error in Command"); //Displayed if there is an error
-                   
+
             }
-        }
+        } */
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -130,13 +125,20 @@ namespace ShapeCreator
                     string[] lines = TextLines.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries); //lines are split to individual command lines
                     foreach (var line in lines)
                     {
-                        
-                            parseCom(line.Trim());
-                            Refresh();
-                      
+
+                        //parseCom(line.Trim());
+                        Refresh();
+
                     }
                 }
             }
         }
     }
 }
+
+
+        
+
+
+
+      

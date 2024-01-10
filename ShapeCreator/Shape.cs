@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace ShapeCreator
 {
@@ -15,10 +16,9 @@ namespace ShapeCreator
         Graphics g;
         Pen pn;
         int x, y;
-        private bool oil = false;
         SolidBrush sb;
-        public Dictionary<string, int> vars = new Dictionary<string, int>();
-        public CmdLists cmdLists;
+       
+        
 
         public Shape(Graphics g)
 
@@ -30,7 +30,7 @@ namespace ShapeCreator
             sb = new SolidBrush(Color.Black);
         }
 
-        public void PenPos(int x, int y)  //Method to change cursor pos
+        /*public void PenPos(int x, int y)  //Method to change cursor pos
         {
 
             this.x = x;
@@ -112,33 +112,14 @@ namespace ShapeCreator
             }
             else
                 g.DrawPolygon(pn, points);
-        }
-
-        public void SetVar(string name, int value)
-        {
-            if (vars.ContainsKey(name))
-            {
-                vars[name] = value;
-            }
+        } */
 
 
-            else
-            {
-                vars.Add(name, value);
-            }
-        }
 
-        public int GetVar(string name)
-        {
-            if (vars.TryGetValue(name, out int value))
-            {
-                return value;
-            }
-            throw new ArgumentException($"Variable {name} not found");
-        }
+       
 
 
-        
+      
 
     }
         

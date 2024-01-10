@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace ShapeCreator
 {
-    public class ClearScreen : TrialBase
+    /* public class ClearScreen : TrialBase
     {
 
         public ClearScreen(Shape shape) : base(shape)
@@ -33,7 +33,7 @@ namespace ShapeCreator
         {
             Shapes.ResetPos();
         }
-    }
+    }  */
 
 
 

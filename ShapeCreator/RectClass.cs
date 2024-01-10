@@ -12,7 +12,7 @@ namespace ShapeCreator
     //Class extending TrialBase, handling drawing rectangle
 
 
-    public class RectClass : TrialBase
+    /* public class RectClass : TrialBase
 
     {
         //Constructor class
@@ -29,5 +29,5 @@ namespace ShapeCreator
 
         }
 
-    }
+    } */
 }

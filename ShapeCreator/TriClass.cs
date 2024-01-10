@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ShapeCreator
 {
     //Class to draw triangle
-    public class TriClass : TrialBase   //extends TrialBase
+    /* class TriClass : TrialBase   //extends TrialBase
     {
         //constructor class
         public TriClass(Shape shape) : base(shape)
@@ -25,6 +25,7 @@ namespace ShapeCreator
             }
             Shapes.DrawTri(IntParseGroup(group, 1), IntParseGroup(group, 2), IntParseGroup(group, 3)); //extracting value of radius from the regular expression groups
         }
-    }
+    } */
+
 
 }
