@@ -75,30 +75,19 @@ namespace ShapeCreator
         private void ExcecuteCom(string com) {
 
             string[] parts = com.Split(' '); //split command into parts
-            if(parts.Length == 2 && variables.ContainsKey(parts[1])) //check for variable
-            { 
-               int value = variables[parts[1]]; 
-               com = com.Replace(parts[1], value.ToString()); //replace name with value in command
-            }
-            else
+            for (int i = 0; i< parts.Length; i++) //loop to check command parts
             {
-                for(int i= 1; i<parts.Length; i++)
+                if (!int.TryParse(parts[i], out _)) //not a number
                 {
-                    if (!int.TryParse(parts[i], out int _))
+                    if (variables.ContainsKey(parts[i])) //check if variable
                     {
-                        if (variables.ContainsKey(parts[i]))
-                        {
-                            int varValue = variables[parts[i]];
-                            com = com.Replace(parts[i], varValue.ToString());
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        parts[i] = variables[parts[i]].ToString(); //reaplce vName with value
                     }
                 }
             }
-            CommandParser.Parse(com, CList);
+            string newCom = string.Join(" ", parts); //join the command and replaced value
+            Console.WriteLine("Check Com:" +  newCom);
+            CommandParser.Parse(newCom, CList);
         }
 
     }
@@ -131,21 +120,3 @@ namespace ShapeCreator
         }
     }
 }
-
-
-
-    
-
-
-
-
-
-            
-    
-
-    
-    
-    
-
-
-
