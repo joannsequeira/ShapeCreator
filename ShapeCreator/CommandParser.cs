@@ -13,6 +13,7 @@ namespace ShapeCreator
     public class CmdLists
     {
         public List<CommandEntry> CList { get; internal set; } //stores list of commands
+        public Dictionary<string, int> variables = new Dictionary<string, int>(); //store variable names and values
 
         public CmdLists(Shape shape) //constructor used for command intialisation
         {
@@ -35,7 +36,69 @@ namespace ShapeCreator
 
         public void Parse(string com)
         {
-            CommandParser.Parse(com, CList);  //parse coammand using the specified list
+            string[] comLines = com.Split('\n'); //split commands based on next line
+
+            foreach(string line in comLines)
+            {
+                if(line.Contains("="))
+                {
+                    string[] parts = line.Split('=');
+                    if(parts.Length == 2)
+                    {
+                        string varName= parts[0].Trim(); //store first part as var name
+                        int varValue;
+                        if (!int.TryParse(parts[1].Trim(), out varValue))
+                        {
+                            throw new ArgumentException("Invalid value provided");
+                        }
+                        VariableHandler(varName, varValue);
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Format for variable is wrong");
+                    }
+
+                }
+                else
+                {
+                    ExcecuteCom(line.Trim());
+                }
+            }
+            //CommandParser.Parse(com, CList);  //parse coammand using the specified list
+        }
+        
+        private void VariableHandler(string varName, int varValue)
+        {
+            variables[varName] = varValue;
+        }
+
+        private void ExcecuteCom(string com) {
+
+            string[] parts = com.Split(' '); //split command into parts
+            if(parts.Length == 2 && variables.ContainsKey(parts[1])) //check for variable
+            { 
+               int value = variables[parts[1]]; 
+               com = com.Replace(parts[1], value.ToString()); //replace name with value in command
+            }
+            else
+            {
+                for(int i= 1; i<parts.Length; i++)
+                {
+                    if (!int.TryParse(parts[i], out int _))
+                    {
+                        if (variables.ContainsKey(parts[i]))
+                        {
+                            int varValue = variables[parts[i]];
+                            com = com.Replace(parts[i], varValue.ToString());
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            CommandParser.Parse(com, CList);
         }
 
     }
