@@ -37,12 +37,13 @@ namespace ShapeCreator
         public void Parse(string com)
         {
             string[] comLines = com.Split('\n'); //split commands based on next line
+            bool inIfBlock = false;
 
-            foreach(string line in comLines)
+            foreach (string line in comLines)
             {
                 if(line.Contains("="))
                 {
-                    string[] parts = line.Split('=');
+                    string[] parts = line.Split('='); //check line for "=" and split the line to parts
                     if(parts.Length == 2)
                     {
                         string varName= parts[0].Trim(); //store first part as var name
@@ -57,9 +58,20 @@ namespace ShapeCreator
                     {
                         throw new ArgumentException("Format for variable is wrong");
                     }
-
                 }
-                else
+                else if(line.StartsWith("if") && !inIfBlock)
+                {
+                    string condif = line.Substring(3).Trim();
+                    if(!ConditionChecker(condif))
+                    {
+                        inIfBlock = true;
+                    }
+                    else if(line.StartsWith("endif") && inIfBlock)
+                    {
+                        inIfBlock = false;  //if statement logic call
+                    }
+                }
+                else if (!inIfBlock)
                 {
                     ExcecuteCom(line.Trim());
                 }
@@ -69,7 +81,7 @@ namespace ShapeCreator
         
         private void VariableHandler(string varName, int varValue)
         {
-            variables[varName] = varValue;
+            variables[varName] = varValue; //store value with corresponding varname
         }
 
         private void ExcecuteCom(string com) {
@@ -90,7 +102,60 @@ namespace ShapeCreator
             CommandParser.Parse(newCom, CList);
         }
 
-    }
+        private bool ConditionChecker(string condif)  //trying for cond like c < 10 etc
+        {
+            string[] parts = condif.Split(' ');
+            if (parts.Length != 3)
+            {
+                throw new Exception("Invalid");
+            }
+            string varName = parts[0];
+            string operatr = parts[1];
+            int opval;
+            if (!int.TryParse(parts[2], out opval))
+                { throw new Exception("Invalid"); }
+            if(!variables.ContainsKey(varName))
+            {
+                throw new Exception("Invalid");
+            }
+            int varValue = variables[varName];
+            
+            //condition check
+            switch(operatr){
+                case "==": return varValue == opval;
+                case "!=": return varValue != opval;
+                case "<": return varValue < opval;
+                case ">": return varValue > opval;
+                //adding more after checking run
+                default:
+                    throw new ArgumentException("Invalid operator given");
+
+            }
+            
+        }
+
+        private void SkipUntilEndif(string[] comLines)
+        {
+            // Skip lines until the corresponding endif is found
+            int ifCount = 1;
+            foreach (string line in comLines)
+            {
+                if (line.StartsWith("if"))
+                {
+                    ifCount++;
+                }
+                else if (line.StartsWith("endif"))
+                {
+                    ifCount--;
+                    if (ifCount == 0)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    
+}
 
     public class CommandEntry
     {
