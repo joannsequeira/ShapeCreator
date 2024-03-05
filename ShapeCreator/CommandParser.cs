@@ -37,48 +37,63 @@ namespace ShapeCreator
         public void Parse(string com)
         {
             string[] comLines = com.Split('\n'); //split commands based on next line
-            bool inIfBlock = false;
+            bool inIfBlock = false; //flat for inside if
+            bool skipIfBlock = false;  //flag for skip if condition not true
 
-            foreach (string line in comLines)
+            foreach (string line in comLines) 
             {
-                 if (line.StartsWith("if") && !inIfBlock)
-                {
-                    string condif = line.Substring(3).Trim();
-                    if (!ConditionChecker(condif))
+                
+                    if (line.StartsWith("if") || line.StartsWith("endif") || skipIfBlock) //handle if, endif and skpping lines in block
                     {
-                        inIfBlock = true;
-                    }
-                    else if (line.StartsWith("endif") && inIfBlock)
-                    {
-                        inIfBlock = false;  //if statement logic call
-                    }
-                }
-               else if (line.Contains("="))
-                {
-                    string[] parts = line.Split('='); //check line for "=" and split the line to parts
-                    if(parts.Length == 2)
-                    {
-                        string varName= parts[0].Trim(); //store first part as var name
-                        
+                        inIfBlock = true;  //inside if block
+                        if (line.StartsWith("endif"))
+                        {
+                            inIfBlock = false; //outside if block
+                            skipIfBlock = false; 
+                            continue;
+                        }
+                        else if (skipIfBlock)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            string condif = line.Substring(3).Trim();
+                            if (!ConditionChecker(condif))
+                            {
+                                skipIfBlock = true;
+                            }
 
-                        string opVal = parts[1].Trim();
-                        int result = Op(opVal);
-                        
-                        
-                        VariableHandler(varName, result); 
+                        }
                     }
+                    else if (line.Contains("="))
+                    {
+                        string[] parts = line.Split('='); //check line for "=" and split the line to parts
+                        if (parts.Length == 2)
+                        {
+                            string varName = parts[0].Trim(); //store first part as var name
+
+
+                            string opVal = parts[1].Trim();
+                            int result = Op(opVal);
+
+
+                            VariableHandler(varName, result);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Format for variable is wrong");
+                        }
+                    }
+
                     else
                     {
-                        throw new ArgumentException("Format for variable is wrong");
+                        ExcecuteCom(line.Trim());
                     }
                 }
-                
-                else                 {
-                    ExcecuteCom(line.Trim());
-                }
+                //CommandParser.Parse(com, CList);  //parse coammand using the specified list
             }
-            //CommandParser.Parse(com, CList);  //parse coammand using the specified list
-        }
+        
         
         private void VariableHandler(string varName, int varValue)
         {

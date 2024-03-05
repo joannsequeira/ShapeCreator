@@ -33,24 +33,19 @@ namespace ShapeCreator
             string[] lines = textBox1.Lines;
             string[] lined = textBox2.Lines;
 
-            foreach (var line in lines)
-            {
-                if(!string.IsNullOrEmpty(line))
+            
+                if (lines.Length > 1)
                 {
-                    parseCom(line.Trim());
-                    Refresh();
+                    parseCom(string.Join("\n", lines));
                 }
-            }
-
-            foreach (var line in lined)
-            {
-                if (!string.IsNullOrEmpty(line))
+                else
                 {
-                    parseCom(line.Trim());
-                    Refresh();
+                    parseCom(string.Join("\n", lined));
                 }
-            }
+                Refresh();
+            
         }
+        
 
 
       
