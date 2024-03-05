@@ -34,6 +34,11 @@ namespace ShapeCreator
 
         }
 
+        /// <summary>
+        /// Parse the commands line by line given as input text
+        /// </summary>
+        /// <param name="com">The command string to parse </param>
+        /// <exception cref="ArgumentException">Thrown for invalid variable intialisation format</exception>
         public void Parse(string com)
         {
             string[] comLines = com.Split('\n'); //split commands based on next line
@@ -94,12 +99,21 @@ namespace ShapeCreator
                 //CommandParser.Parse(com, CList);  //parse coammand using the specified list
             }
         
+        /// <summary>
+        /// Assigns variable names to given value
+        /// </summary>
+        /// <param name="varName"> Variable for name</param>
+        /// <param name="varValue">Variable for value</param>
         
         private void VariableHandler(string varName, int varValue)
         {
             variables[varName] = varValue; //store value with corresponding varname
         }
 
+        /// <summary>
+        /// Replaces variable name with value and calls the Command parser parse method to execute the command
+        /// </summary>
+        /// <param name="com">The command that needs to be excecuted</param>
         private void ExcecuteCom(string com) {
 
             string[] parts = com.Split(' '); //split command into parts
@@ -118,6 +132,11 @@ namespace ShapeCreator
             CommandParser.Parse(newCom, CList);
         }
 
+        /// <summary>
+        /// get value of variable from dictionary or return input string if not found
+        /// </summary>
+        /// <param name="stmt">variable name or input string</param>
+        /// <returns> The value of the variable or input string if no value is found</returns>
         private string getVar(string stmt) //get val from dictionary or return input string com
         {
             if (variables.ContainsKey(stmt))
@@ -127,6 +146,13 @@ namespace ShapeCreator
             return stmt;  //if not found
         }
 
+
+        /// <summary>
+        /// Find the operator in input string and perform the corresponding arithmetic operation
+        /// </summary>
+        /// <param name="opVal">Input string containing the operator to find</param>
+        /// <returns>The result after operation is performed</returns>
+        /// <exception cref="ArgumentException">Invalid operator provided</exception>
         private int Op(string opVal)  //find arithmetic operator and handle result
         {
             char[] ops = {'+', '-', '*', '/'}; //array of arithmetic operators
@@ -177,16 +203,13 @@ namespace ShapeCreator
                 
             }
 
-
-
-
-
-
-
-            
-           
-        
-
+        /// <summary>
+        /// Check if format is variavle cond value
+        /// </summary>
+        /// <param name="condif">Condition that needs to be checked</param>
+        /// <returns>If the condition is true or false</returns>
+        /// <exception cref="Exception">Invalid Format</exception>
+        /// <exception cref="ArgumentException">Invalid Conditonal Operator</exception>
         private bool ConditionChecker(string condif)  //trying for cond like c < 10 etc
         {
             string[] parts = condif.Split(' ');
@@ -219,26 +242,10 @@ namespace ShapeCreator
             
         }
 
-        private void SkipUntilEndif(string[] comLines)
-        {
-            // Skip lines until the corresponding endif is found
-            int ifCount = 1;
-            foreach (string line in comLines)
-            {
-                if (line.StartsWith("if"))
-                {
-                    ifCount++;
-                }
-                else if (line.StartsWith("endif"))
-                {
-                    ifCount--;
-                    if (ifCount == 0)
-                    {
-                        break;
-                    }
-                }
-            }
-        }
+        
+                
+            
+        
     
 }
 
