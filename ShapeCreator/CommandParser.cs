@@ -41,21 +41,30 @@ namespace ShapeCreator
 
             foreach (string line in comLines)
             {
-                if(line.Contains("="))
+                 if (line.StartsWith("if") && !inIfBlock)
+                {
+                    string condif = line.Substring(3).Trim();
+                    if (!ConditionChecker(condif))
+                    {
+                        inIfBlock = true;
+                    }
+                    else if (line.StartsWith("endif") && inIfBlock)
+                    {
+                        inIfBlock = false;  //if statement logic call
+                    }
+                }
+               else if (line.Contains("="))
                 {
                     string[] parts = line.Split('='); //check line for "=" and split the line to parts
                     if(parts.Length == 2)
                     {
                         string varName= parts[0].Trim(); //store first part as var name
-                        int varValue;
+                        
 
                         string opVal = parts[1].Trim();
                         int result = Op(opVal);
                         
-                        /* if (!int.TryParse(parts[1].Trim(), out varValue))
-                        {
-                            throw new ArgumentException("Invalid value provided");
-                        } */
+                        
                         VariableHandler(varName, result); 
                     }
                     else
@@ -63,20 +72,8 @@ namespace ShapeCreator
                         throw new ArgumentException("Format for variable is wrong");
                     }
                 }
-                else if(line.StartsWith("if") && !inIfBlock)
-                {
-                    string condif = line.Substring(3).Trim();
-                    if(!ConditionChecker(condif))
-                    {
-                        inIfBlock = true;
-                    }
-                    else if(line.StartsWith("endif") && inIfBlock)
-                    {
-                        inIfBlock = false;  //if statement logic call
-                    }
-                }
-                else if (!inIfBlock)
-                {
+                
+                else                 {
                     ExcecuteCom(line.Trim());
                 }
             }
