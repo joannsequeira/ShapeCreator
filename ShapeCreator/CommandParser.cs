@@ -115,118 +115,65 @@ namespace ShapeCreator
             return stmt;  //if not found
         }
 
-        private int Op(string opVal)  //trying for var int. like c = c + 10 etc
+        private int Op(string opVal)  //find arithmetic operator and handle result
         {
+            char[] ops = {'+', '-', '*', '/'}; //array of arithmetic operators
+            char optr = default(char);
+            
 
-            int result;
-            if (opVal.Contains("+"))  //check for operator symbol
+
+            foreach (char op in ops)
             {
-                string[] opSplit = opVal.Split('+');
-                if (opSplit.Length != 2)
+                if (opVal.Contains(op))
                 {
-                    throw new ArgumentException("Invalid op value given");
+                    optr = op; break;    //asign value of operator used to optr
                 }
-
-
-                var op1 = getVar(opSplit[0].Trim());  //split operands into op1
-                var op2 = getVar(opSplit[1].Trim());  //and operant op2
-
-                int op1Int;
-                int op2Int;
-                if (!int.TryParse(op1, out op1Int))
-                {
-                    throw new ArgumentException("Invalid op1 value provided");
-                }
-
-                if (!int.TryParse(op2, out op2Int))
-                {
-                    throw new ArgumentException("Invalid op2 value provided");
-                }
-                result = op1Int + op2Int;   //result after performing arithmetic operation
             }
-            else if (opVal.Contains("-"))  //subtraction
+            if (optr == default(char))  //if there is no operator 
             {
-                string[] opSplit = opVal.Split('-');
-                if (opSplit.Length != 2)
-                {
-                    throw new ArgumentException("Invalid op value given");
-                }
-                var op1 = getVar(opSplit[0].Trim());
-                var op2 = getVar(opSplit[1].Trim());
-
-                int op1Int;
-                int op2Int;
-                if (!int.TryParse(op1, out op1Int))
-                {
-                    throw new ArgumentException("Invalid op1 value provided");
-                }
-
-                if (!int.TryParse(op2, out op2Int))
-                {
-                    throw new ArgumentException("Invalid op2 value provided");
-                }
-                result = op1Int - op2Int;
-            }
-            else if (opVal.Contains("*"))  //multiplication
-            {
-                string[] opSplit = opVal.Split('*');
-                if (opSplit.Length != 2)
-                {
-                    throw new ArgumentException("Invalid op value given");
-                }
-                var op1 = getVar(opSplit[0].Trim());
-                var op2 = getVar(opSplit[1].Trim());
-
-                int op1Int;
-                int op2Int;
-                if (!int.TryParse(op1, out op1Int))
-                {
-                    throw new ArgumentException("Invalid op1 value provided");
-                }
-
-                if (!int.TryParse(op2, out op2Int))
-                {
-                    throw new ArgumentException("Invalid op2 value provided");
-                }
-                result = op1Int * op2Int;
-            }
-            else if (opVal.Contains("/")) //division
-            {
-                string[] opSplit = opVal.Split('/');
-                if (opSplit.Length != 2)
-                {
-                    throw new ArgumentException("Invalid op value given");
-                }
-                var op1 = getVar(opSplit[0].Trim());
-                var op2 = getVar(opSplit[1].Trim());
-
-                int op1Int;
-                int op2Int;
-                if (!int.TryParse(op1, out op1Int))
-                {
-                    throw new ArgumentException("Invalid op1 value provided");
-                }
-
-                if (!int.TryParse(op2, out op2Int))
-                {
-                    throw new ArgumentException("Invalid op2 value provided");
-                }
-                result = op1Int / op2Int;
-            }
-            else
-            {
-
-                int op1Int;
-                if (!int.TryParse(opVal, out op1Int))
-                {
-                    throw new ArgumentException("Invalid op1 value provided"); //error for invalid
-                }
-
-                result = op1Int; //if no operator found
+                if (!int.TryParse(getVar(opVal), out int result))
+                
+                    throw new ArgumentException("Invalid Operator Provided");
+                return result;
+                
             }
 
-            return result;
-        }
+                    string[] opSplit = opVal.Split(optr);
+                    if(opSplit.Length != 2)
+                    
+                        throw new ArgumentException("Invalid operator input provided");
+                    if (!int.TryParse(getVar(opSplit[0].Trim()), out int op1Int) || !int.TryParse(getVar(opSplit[1].Trim()), out int op2Int))
+                        throw new ArgumentException("Invalid operation format or assignment");
+            
+                    switch(optr)
+                    {
+                        case '+':  return op1Int + op2Int; 
+                           
+                        case '-': return op1Int - op2Int; 
+                        case '*': return op1Int * op2Int; 
+                        case '/': 
+                            if(op2Int == 0)
+                            {
+                                throw new ArgumentException("Division By Zero");
+                            }
+                            return op1Int / op2Int;
+                          
+
+                        default: throw new ArgumentException("Invalid Operator");
+                    }
+                
+                
+            }
+
+
+
+
+
+
+
+            
+           
+        
 
         private bool ConditionChecker(string condif)  //trying for cond like c < 10 etc
         {
