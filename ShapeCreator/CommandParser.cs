@@ -45,16 +45,26 @@ namespace ShapeCreator
             bool inIfBlock = false; //flat for inside if
             bool skipIfBlock = false;  //flag for skip if condition not true
 
-            foreach (string line in comLines) 
+            //flags for loop 
+            bool inLoopBlock = false;
+            bool skipLoopBlock= false;
+            int lpCountr = 0;
+
+
+
+            for (int lineCounter = 0; lineCounter < comLines.Length; lineCounter++)
             {
+                var line = comLines[lineCounter];
+
                 
+
                     if (line.StartsWith("if") || line.StartsWith("endif") || skipIfBlock) //handle if, endif and skpping lines in block
                     {
                         inIfBlock = true;  //inside if block
                         if (line.StartsWith("endif"))
                         {
                             inIfBlock = false; //outside if block
-                            skipIfBlock = false; 
+                            skipIfBlock = false;
                             continue;
                         }
                         else if (skipIfBlock)
@@ -69,6 +79,39 @@ namespace ShapeCreator
                                 skipIfBlock = true;
                             }
 
+                        }
+                    }
+                   if (line.StartsWith("loop") || line.StartsWith("endloop") || skipLoopBlock) //handle if, endif and skpping lines in block
+                    {
+                        inLoopBlock = true;
+
+                        if (line.StartsWith("endloop"))
+                        {
+
+                            if (!skipLoopBlock)
+                            {
+                                lineCounter = lpCountr;
+                            }
+                            else
+                            {
+                                inLoopBlock = false;
+                                skipLoopBlock = false;
+                            }
+                            continue;
+                        }
+                        else if (skipLoopBlock)
+                        {
+                            continue;
+                        }
+                        else if (line.StartsWith("loop"))
+                        {
+                            lpCountr = lineCounter;  //allow line to repeat in block
+
+                            string condLoop = line.Substring(4).Trim();
+                            if (!ConditionChecker(condLoop))
+                            {
+                                skipLoopBlock = true;
+                            }
                         }
                     }
                     else if (line.Contains("="))
@@ -96,8 +139,10 @@ namespace ShapeCreator
                         ExcecuteCom(line.Trim());
                     }
                 }
+            
                 //CommandParser.Parse(com, CList);  //parse coammand using the specified list
             }
+
         
         /// <summary>
         /// Assigns variable names to given value
