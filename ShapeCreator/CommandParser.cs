@@ -138,7 +138,7 @@ namespace ShapeCreator
 
                         if (mthdDeclare.ContainsKey(mthdName))
                         {
-                            throw new InvalidDataException("Method already exist.");  //create method with same name
+                            throw new ShapeCreatorException("Method already exist.");  //create method with same name
                         }
                         inMthdBlock = true;  //set flag to inside block
                     }
@@ -161,7 +161,7 @@ namespace ShapeCreator
 
                     if (!mthdDeclare.ContainsKey(mthdCallName))
                     {
-                        throw new InvalidDataException("Method not exist.");
+                        throw new ShapeCreatorException("Method not exist.");
                     }
 
                     var mthdCom = mthdDeclare[mthdCallName];  //commands loaded into mthdCom from Dictionary
@@ -184,7 +184,7 @@ namespace ShapeCreator
                         }
                         else
                         {
-                            throw new ArgumentException("Format for variable is wrong");
+                            throw new ShapeCreatorException("Format for variable is wrong");
                         }
                     }
 
@@ -251,7 +251,7 @@ namespace ShapeCreator
         /// </summary>
         /// <param name="opVal">Input string containing the operator to find</param>
         /// <returns>The result after operation is performed</returns>
-        /// <exception cref="ArgumentException">Invalid operator provided</exception>
+        /// <exception cref="ShapeCreatorException">Invalid operator provided</exception>
         private int Op(string opVal)  //find arithmetic operator and handle result
         {
             char[] ops = {'+', '-', '*', '/'}; //array of arithmetic operators
@@ -270,7 +270,7 @@ namespace ShapeCreator
             {
                 if (!int.TryParse(getVar(opVal), out int result))
                 
-                    throw new ArgumentException("Invalid Operator Provided");
+                    throw new ShapeCreatorException("Invalid Operator Provided");
                 return result;
                 
             }
@@ -278,9 +278,9 @@ namespace ShapeCreator
                     string[] opSplit = opVal.Split(optr);
                     if(opSplit.Length != 2)
                     
-                        throw new ArgumentException("Invalid operator input provided");
+                        throw new ShapeCreatorException("Invalid operator input provided");
                     if (!int.TryParse(getVar(opSplit[0].Trim()), out int op1Int) || !int.TryParse(getVar(opSplit[1].Trim()), out int op2Int))
-                        throw new ArgumentException("Invalid operation format or assignment");
+                        throw new ShapeCreatorException("Invalid operation format or assignment");
             
                     switch(optr)
                     {
@@ -291,12 +291,12 @@ namespace ShapeCreator
                         case '/': 
                             if(op2Int == 0)
                             {
-                                throw new ArgumentException("Division By Zero");
+                                throw new ShapeCreatorException("Division By Zero");
                             }
                             return op1Int / op2Int;
                           
 
-                        default: throw new ArgumentException("Invalid Operator");
+                        default: throw new ShapeCreatorException("Invalid Operator");
                     }
                 
                 
@@ -335,7 +335,7 @@ namespace ShapeCreator
                 case ">": return varValue > opval;
                 //adding more after checking run
                 default:
-                    throw new ArgumentException("Invalid operator given");
+                    throw new ShapeCreatorException("Invalid operator given");
 
             }
             
@@ -372,7 +372,7 @@ namespace ShapeCreator
             }
 
             if (!similar)
-                throw new InvalidDataException("Command not valid");  //show error message if not found or matched
+                throw new ShapeCreatorException("Command not valid");  //show error message if not found or matched
         }
     }
 }
