@@ -34,7 +34,7 @@ namespace ShapeCreator
             string[] lined = textBox2.Lines;
 
             
-                if (lines.Length > 1)
+                if (lines.Length > 0)
                 {
                     parseCom(string.Join("\n", lines));
                 }

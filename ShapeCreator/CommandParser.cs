@@ -14,7 +14,7 @@ namespace ShapeCreator
     {
         public List<CommandEntry> CList { get; internal set; } //stores list of commands
         public Dictionary<string, int> variables = new Dictionary<string, int>(); //store variable names and values
-
+        public Dictionary<string, string> mthdDeclare = new Dictionary<string, string>();
         public CmdLists(Shape shape) //constructor used for command intialisation
         {
             CList = new List<CommandEntry>
@@ -50,6 +50,11 @@ namespace ShapeCreator
             bool skipLoopBlock= false;
             int lpCountr = 0;
 
+            //flags and variables for method handling
+            bool inMthdBlock = false;
+            var mthdVar = "";
+            var mthdName = "";
+
 
 
             for (int lineCounter = 0; lineCounter < comLines.Length; lineCounter++)
@@ -81,40 +86,89 @@ namespace ShapeCreator
 
                         }
                     }
-                   if (line.StartsWith("loop") || line.StartsWith("endloop") || skipLoopBlock) //handle if, endif and skpping lines in block
+                if (line.StartsWith("loop") || line.StartsWith("endloop") || skipLoopBlock) //handle loop, endloop and repeating lines in block
+                {
+                    inLoopBlock = true;
+
+                    if (line.StartsWith("endloop"))
                     {
-                        inLoopBlock = true;
 
-                        if (line.StartsWith("endloop"))
+                        if (!skipLoopBlock)
                         {
-
-                            if (!skipLoopBlock)
-                            {
-                                lineCounter = lpCountr;
-                            }
-                            else
-                            {
-                                inLoopBlock = false;
-                                skipLoopBlock = false;
-                            }
-                            continue;
+                            lineCounter = lpCountr - 1;
                         }
-                        else if (skipLoopBlock)
+                        else
                         {
-                            continue;
+                            inLoopBlock = false;
+                            skipLoopBlock = false;
                         }
-                        else if (line.StartsWith("loop"))
-                        {
-                            lpCountr = lineCounter;  //allow line to repeat in block
+                        continue;
+                    }
+                    else if (skipLoopBlock)
+                    {
+                        continue;
+                    }
+                    else if (line.StartsWith("loop"))
+                    {
 
-                            string condLoop = line.Substring(4).Trim();
-                            if (!ConditionChecker(condLoop))
-                            {
-                                skipLoopBlock = true;
-                            }
+
+
+                        lpCountr = lineCounter;  //allow line to repeat in block
+                        string condLoop = line.Substring(4).Trim();
+                        if (!ConditionChecker(condLoop))
+                        {
+                            skipLoopBlock = true;
                         }
                     }
-                    else if (line.Contains("="))
+                }
+
+                else if (line.StartsWith("mthd") || line.StartsWith("endmthd") || inMthdBlock)  //handle method definition and call
+                {
+                    if (line.StartsWith("endmthd"))
+                    {
+                        inMthdBlock = false;
+                        mthdDeclare.Add(mthdName, mthdVar);  //once endmthd is found, add to Dictionary
+                        continue;
+                    }
+
+                    else if (line.StartsWith("mthd"))
+                    {
+                        string[] parts = line.Split(' ');
+                        mthdName = parts[1].Trim();
+
+                        if (mthdDeclare.ContainsKey(mthdName))
+                        {
+                            throw new InvalidDataException("Method already exist.");  //create method with same name
+                        }
+                        inMthdBlock = true;  //set flag to inside block
+                    }
+                    else
+                    { 
+                     if  (mthdVar.Length > 0) {
+                      mthdVar = mthdVar + '\n' + line;  //for methods with multiple lines
+
+                    }
+                    else
+                    {
+                        mthdVar = line;  
+                    }
+                }
+                }
+                else if (line.StartsWith("callmthd"))
+                {
+                    string[] mthdCall = line.Split(' ');  
+                    string mthdCallName = mthdCall[1].Trim();
+
+                    if (!mthdDeclare.ContainsKey(mthdCallName))
+                    {
+                        throw new InvalidDataException("Method not exist.");
+                    }
+
+                    var mthdCom = mthdDeclare[mthdCallName];  //commands loaded into mthdCom from Dictionary
+                    Parse(mthdCom);
+                }
+
+                else if (line.Contains("="))
                     {
                         string[] parts = line.Split('='); //check line for "=" and split the line to parts
                         if (parts.Length == 2)
