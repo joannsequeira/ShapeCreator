@@ -396,7 +396,7 @@ namespace ShapeCreator
             }
 
             if (!similar)
-                throw new InvalidDataException(command+"Command not valid");  //show error message if not found or matched
+                throw new ShapeCreatorException(command+" Command not valid");  //show error message if not found or matched
         }
     }
 }

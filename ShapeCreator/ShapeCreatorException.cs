@@ -7,7 +7,7 @@ using static System.Windows.Forms.LinkLabel;
 
 namespace ShapeCreator
 {
-    internal class ShapeCreatorException : Exception
+    public class ShapeCreatorException : Exception
     {
 
         public int line;
