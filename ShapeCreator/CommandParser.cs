@@ -12,25 +12,14 @@ namespace ShapeCreator
 
     public class CmdLists
     {
-        public List<CommandEntry> CList { get; internal set; } //stores list of commands
+        
         public Dictionary<string, int> variables; //store variable names and values
         public Dictionary<string, string> mthdDeclare; //store methods 
+
+        Shape shape;
         public CmdLists(Shape shape) //constructor used for command intialisation
         {
-            CList = new List<CommandEntry>
-            {
-                new CommandEntry { CmdRg = @"clearsc", Command = new ClearScreen(shape)  },  //Clear Screen
-                new CommandEntry { CmdRg = @"drawRect (\d+) (\d+)", Command = new RectClass(shape)  },  //Draw Rectangle
-                new CommandEntry { CmdRg = @"colorin (true|false)", Command = new FillShape(shape)} ,  //Fill Shape
-                new CommandEntry { CmdRg = @"resetPos", Command = new ResetPos(shape)},  //Reset Pointer
-                new CommandEntry { CmdRg = @"penChange (\w+)", Command = new PenChange(shape)}, //Change color of Pen
-                new CommandEntry { CmdRg = @"brushChange (\w+)", Command = new BrushChange(shape)}, //Change color of Brush
-                new CommandEntry { CmdRg = @"drawCirc (\d+)", Command = new CircClass(shape)},  //Draw Circle
-                new CommandEntry { CmdRg = @"drawTo (\d+) (\d+)", Command = new DrawTo(shape)}, //Draw Line
-                new CommandEntry { CmdRg = @"moveTo (\d+) (\d+)", Command = new PenPos(shape)}, //Move pointer
-                new CommandEntry { CmdRg = @"drawTri (\d+) (\d+) (\d+)", Command = new TriClass(shape)} //Draw Triangle
-
-            };
+            this.shape = shape;
 
         }
 
@@ -250,7 +239,7 @@ namespace ShapeCreator
             }
             string newCom = string.Join(" ", parts); //join the command and replaced value
             Console.WriteLine("Check Com:" +  newCom);
-            CommandParser.Parse(newCom, CList);
+            new CommandParser(shape).Parse(newCom);
         }
 
         /// <summary>
@@ -362,12 +351,7 @@ namespace ShapeCreator
             }
             
         }
-
-        
-                
-            
-        
-    
+  
 }
 
     public class CommandEntry
@@ -376,15 +360,33 @@ namespace ShapeCreator
         public ICmd Command { get; set; }
     }
 
-    public static class CommandParser
+    public class CommandParser
     {
+        public List<CommandEntry> CList { get; internal set; } //stores list of commands
+        public CommandParser(Shape shape) //constructor used for command intialisation
+        {
+            CList = new List<CommandEntry>
+            {
+                new CommandEntry { CmdRg = @"clearsc", Command = new ClearScreen(shape)  },  //Clear Screen
+                new CommandEntry { CmdRg = @"drawRect (\d+) (\d+)$", Command = new RectClass(shape)  },  //Draw Rectangle
+                new CommandEntry { CmdRg = @"colorin (true|false)", Command = new FillShape(shape)} ,  //Fill Shape
+                new CommandEntry { CmdRg = @"resetPos", Command = new ResetPos(shape)},  //Reset Pointer
+                new CommandEntry { CmdRg = @"penChange (\w+)$", Command = new PenChange(shape)}, //Change color of Pen
+                new CommandEntry { CmdRg = @"brushChange (\w+)$", Command = new BrushChange(shape)}, //Change color of Brush
+                new CommandEntry { CmdRg = @"drawCirc (\d+)$", Command = new CircClass(shape)},  //Draw Circle
+                new CommandEntry { CmdRg = @"drawTo (\d+) (\d+)$", Command = new DrawTo(shape)}, //Draw Line
+                new CommandEntry { CmdRg = @"moveTo (\d+) (\d+)$", Command = new PenPos(shape)}, //Move pointer
+                new CommandEntry { CmdRg = @"drawTri (\d+) (\d+) (\d+)$", Command = new TriClass(shape)} //Draw Triangle
 
-        public static void Parse(string command, List<CommandEntry> cmdList)
+            };
+
+        }
+        public void Parse(string command)
         {
             bool similar = false;
-            foreach (var entry in cmdList)
+            foreach (var entry in CList)
             {
-                var match = Regex.Match(command, entry.CmdRg); //matching command to the regular expression pattern
+                var match = Regex.Match(command, entry.CmdRg, RegexOptions.IgnoreCase); //matching command to the regular expression pattern
                 if (match.Success)
                 {
                     entry.Command.Excecute(match.Groups);  //execute the command if found
