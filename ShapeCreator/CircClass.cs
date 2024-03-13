@@ -20,7 +20,7 @@ namespace ShapeCreator
         {
             if (group.Count < 2)
             {
-                throw new ArgumentException("Insufficient Parameters");
+                throw new ShapeCreatorException("Insufficient Parameters");
             }
             Shapes.DrawCirc(int.Parse(group[1].Value)); //extracting value of radius from the regular expression groups
         }

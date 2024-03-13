@@ -74,7 +74,7 @@ namespace ShapeCreator
         {
             if (group.Count < 3)
             {
-                throw new ArgumentException("Insufficient Parameters");
+                throw new ShapeCreatorException("Insufficient Parameters");
             }
             Shapes.DrawTo(IntParseGroup(group, 1), IntParseGroup(group, 2));
         }
@@ -92,7 +92,7 @@ namespace ShapeCreator
         {
             if (group.Count < 3)
             {
-                throw new ArgumentException("Insufficient Parameters");
+                throw new ShapeCreatorException("Insufficient Parameters");
             }
             Shapes.PenPos(IntParseGroup(group, 1), IntParseGroup(group, 2));
         }

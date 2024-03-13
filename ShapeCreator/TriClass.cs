@@ -21,7 +21,7 @@ namespace ShapeCreator
         {
             if (group.Count < 4)
             {
-                throw new ArgumentException("Insufficient Parameters");
+                throw new ShapeCreatorException("Insufficient Parameters");
             }
             Shapes.DrawTri(IntParseGroup(group, 1), IntParseGroup(group, 2), IntParseGroup(group, 3)); //extracting value of radius from the regular expression groups
         }

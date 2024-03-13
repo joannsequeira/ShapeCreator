@@ -33,16 +33,35 @@ namespace ShapeCreator
             string[] lines = textBox1.Lines;
             string[] lined = textBox2.Lines;
 
-            
+            try
+            {
                 if (lines.Length > 0)
                 {
                     parseCom(string.Join("\n", lines));
                 }
-                else
+                else if (lines.Length > 0)
                 {
                     parseCom(string.Join("\n", lined));
                 }
-                Refresh();
+                else
+                {
+                    throw new ShapeCreatorException("Please enter a command.");
+                }
+            }
+            catch (ShapeCreatorException x)
+            {
+                var message = x.Message;
+                if (x.line != 0)
+                {
+                    message = message + " Line at " + x.line;
+                }
+                MessageBox.Show(message, "Processing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message, "Processing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            Refresh();
             
         }
         

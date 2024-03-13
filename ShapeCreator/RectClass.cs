@@ -23,7 +23,7 @@ namespace ShapeCreator
         {
             if (group.Count < 3)
             {
-                throw new ArgumentException("Insufficient Parameters");
+                throw new ShapeCreatorException("Insufficient Parameters");
             }
             Shapes.DrawRect(IntParseGroup(group,1), IntParseGroup(group, 2)); //getting width, height from reg. expression groups
 

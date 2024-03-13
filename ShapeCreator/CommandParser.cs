@@ -13,8 +13,8 @@ namespace ShapeCreator
     public class CmdLists
     {
         public List<CommandEntry> CList { get; internal set; } //stores list of commands
-        public Dictionary<string, int> variables = new Dictionary<string, int>(); //store variable names and values
-        public Dictionary<string, string> mthdDeclare = new Dictionary<string, string>();
+        public Dictionary<string, int> variables; //store variable names and values
+        public Dictionary<string, string> mthdDeclare; //store methods 
         public CmdLists(Shape shape) //constructor used for command intialisation
         {
             CList = new List<CommandEntry>
@@ -41,6 +41,9 @@ namespace ShapeCreator
         /// <exception cref="ArgumentException">Thrown for invalid variable intialisation format</exception>
         public void Parse(string com)
         {
+            variables = new Dictionary<string, int>();  //add variables to dictionary
+            mthdDeclare = new Dictionary<string, string>(); //add method to dictionary
+
             string[] comLines = com.Split('\n'); //split commands based on next line
             bool inIfBlock = false; //flat for inside if
             bool skipIfBlock = false;  //flag for skip if condition not true
@@ -79,7 +82,7 @@ namespace ShapeCreator
                         else
                         {
                             string condif = line.Substring(3).Trim();
-                            if (!ConditionChecker(condif))
+                            if (!ConditionChecker(condif, lineCounter))
                             {
                                 skipIfBlock = true;
                             }
@@ -115,7 +118,7 @@ namespace ShapeCreator
 
                         lpCountr = lineCounter;  //allow line to repeat in block
                         string condLoop = line.Substring(4).Trim();
-                        if (!ConditionChecker(condLoop))
+                        if (!ConditionChecker(condLoop, lineCounter))
                         {
                             skipLoopBlock = true;
                         }
@@ -138,7 +141,7 @@ namespace ShapeCreator
 
                         if (mthdDeclare.ContainsKey(mthdName))
                         {
-                            throw new ShapeCreatorException("Method already exist.");  //create method with same name
+                            throw new ShapeCreatorException("Method already exist.", lineCounter);  //create method with same name
                         }
                         inMthdBlock = true;  //set flag to inside block
                     }
@@ -161,7 +164,7 @@ namespace ShapeCreator
 
                     if (!mthdDeclare.ContainsKey(mthdCallName))
                     {
-                        throw new ShapeCreatorException("Method not exist.");
+                        throw new ShapeCreatorException("Method not exist.", lineCounter);
                     }
 
                     var mthdCom = mthdDeclare[mthdCallName];  //commands loaded into mthdCom from Dictionary
@@ -177,14 +180,14 @@ namespace ShapeCreator
 
 
                             string opVal = parts[1].Trim();
-                            int result = Op(opVal);
+                            int result = Op(opVal, lineCounter);
 
 
                             VariableHandler(varName, result);
                         }
                         else
                         {
-                            throw new ShapeCreatorException("Format for variable is wrong");
+                            throw new ShapeCreatorException("Format for variable is wrong", lineCounter);
                         }
                     }
 
@@ -192,10 +195,29 @@ namespace ShapeCreator
                     {
                         ExcecuteCom(line.Trim());
                     }
+                
+            if (lineCounter == comLines.Length - 1) //check the last statement
+            {
+                //check for end statement when if,loop,mthd used 
+                //throw exceptions if not found
+                if (!line.StartsWith("endif") && inIfBlock)
+                {
+                    throw new ShapeCreatorException("endif not exist.", lineCounter);
                 }
-            
-                //CommandParser.Parse(com, CList);  //parse coammand using the specified list
+                if (!line.StartsWith("endloop") && inLoopBlock)
+                {
+                    throw new ShapeCreatorException("endloop not exist.", lineCounter);
+                }
+                if (!line.StartsWith("endmthd") && inMthdBlock)
+                {
+                    throw new ShapeCreatorException("endmthd not exist.", lineCounter);
+                }
             }
+
+        }
+
+        //CommandParser.Parse(com, CList);  //parse coammand using the specified list
+    }
 
         
         /// <summary>
@@ -252,7 +274,7 @@ namespace ShapeCreator
         /// <param name="opVal">Input string containing the operator to find</param>
         /// <returns>The result after operation is performed</returns>
         /// <exception cref="ShapeCreatorException">Invalid operator provided</exception>
-        private int Op(string opVal)  //find arithmetic operator and handle result
+        private int Op(string opVal, int lineCounter)  //find arithmetic operator and handle result
         {
             char[] ops = {'+', '-', '*', '/'}; //array of arithmetic operators
             char optr = default(char);
@@ -270,7 +292,7 @@ namespace ShapeCreator
             {
                 if (!int.TryParse(getVar(opVal), out int result))
                 
-                    throw new ShapeCreatorException("Invalid Operator Provided");
+                    throw new ShapeCreatorException("Invalid Operator Provided", lineCounter);
                 return result;
                 
             }
@@ -278,9 +300,9 @@ namespace ShapeCreator
                     string[] opSplit = opVal.Split(optr);
                     if(opSplit.Length != 2)
                     
-                        throw new ShapeCreatorException("Invalid operator input provided");
+                        throw new ShapeCreatorException("Invalid operator input provided", lineCounter);
                     if (!int.TryParse(getVar(opSplit[0].Trim()), out int op1Int) || !int.TryParse(getVar(opSplit[1].Trim()), out int op2Int))
-                        throw new ShapeCreatorException("Invalid operation format or assignment");
+                        throw new ShapeCreatorException("Invalid operation format or assignment", lineCounter);
             
                     switch(optr)
                     {
@@ -291,12 +313,12 @@ namespace ShapeCreator
                         case '/': 
                             if(op2Int == 0)
                             {
-                                throw new ShapeCreatorException("Division By Zero");
+                                throw new ShapeCreatorException("Division By Zero", lineCounter);
                             }
                             return op1Int / op2Int;
                           
 
-                        default: throw new ShapeCreatorException("Invalid Operator");
+                        default: throw new ShapeCreatorException("Invalid Operator", lineCounter);
                     }
                 
                 
@@ -308,22 +330,22 @@ namespace ShapeCreator
         /// <param name="condif">Condition that needs to be checked</param>
         /// <returns>If the condition is true or false</returns>
         /// <exception cref="Exception">Invalid Format</exception>
-        /// <exception cref="ArgumentException">Invalid Conditonal Operator</exception>
-        private bool ConditionChecker(string condif)  //trying for cond like c < 10 etc
+        /// <exception cref="ShapeCreatorException">Invalid Conditonal Operator</exception>
+        private bool ConditionChecker(string condif, int lineCounter)  //trying for cond like c < 10 etc
         {
             string[] parts = condif.Split(' ');
             if (parts.Length != 3)
             {
-                throw new Exception("Invalid"); 
+                throw new ShapeCreatorException("Invalid condition format", lineCounter); 
             }
             string varName = parts[0];
             string operatr = parts[1];
             int opval;
             if (!int.TryParse(parts[2], out opval))
-                { throw new Exception("Invalid"); }
+                { throw new ShapeCreatorException("Invalid value provided", lineCounter); }
             if(!variables.ContainsKey(varName))
             {
-                throw new Exception("Invalid");
+                throw new ShapeCreatorException("Invalid varname provided", lineCounter);
             }
             int varValue = variables[varName];
             
@@ -335,7 +357,7 @@ namespace ShapeCreator
                 case ">": return varValue > opval;
                 //adding more after checking run
                 default:
-                    throw new ShapeCreatorException("Invalid operator given");
+                    throw new ShapeCreatorException("Invalid operator given", lineCounter);
 
             }
             
@@ -372,7 +394,7 @@ namespace ShapeCreator
             }
 
             if (!similar)
-                throw new ShapeCreatorException("Command not valid");  //show error message if not found or matched
+                throw new InvalidDataException(command+"Command not valid");  //show error message if not found or matched
         }
     }
 }
