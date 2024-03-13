@@ -84,13 +84,16 @@ namespace VariableTests
                 Shape shape = new Shape(null);
                 CmdLists commandParser = new CmdLists(shape);
 
-                var command = "b = 5\nc = 5\ndrawRect b c";
+                var command = "b = 5\nc = 9\ndrawRect b c";
 
                 commandParser.Parse(command);
 
-                Assert.AreEqual(5,5, commandParser.variables["b,c"]);
+                Assert.AreEqual(5, commandParser.variables["b"]);
+                Assert.AreEqual(9, commandParser.variables["c"]);
 
-            }
+
+
+        }
 
             [TestMethod]
             public void invalid_createVariableAndUseinDraw()

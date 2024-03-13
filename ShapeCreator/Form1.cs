@@ -18,6 +18,7 @@ namespace ShapeCreator
         private Bitmap b;
         private Shape Shapes;
         private CmdLists cmdList;
+        
 
 
         public Form1()
