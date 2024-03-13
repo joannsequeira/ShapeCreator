@@ -1,20 +1,31 @@
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using ShapeCreator;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Drawing;
 
-namespace TestProject1
+
+//https://learn.microsoft.com/en-us/visualstudio/test/getting-started-with-unit-testing?view=vs-2022&tabs=dotnet%2Cmstest
+
+namespace SingleCommandTest
 {
     [TestClass]
-    public class TriangleTest
+    public class SingleCommandTest
     {
         [TestMethod]
-        public void ValidParameter_Triangle()
+        public void validCircleDraw()
 
         {
+            var command = " drawCirc 50";
 
-            var testdem = new TestDem();
-            //var triclass = new TriClass(testdem);
-            //var group = TestHelper.CreateGroup(drawTri 1 2 3);
+            Shape shape = new Shape(null);
+            CmdLists commandParser = new CmdLists(shape);
 
-            //triclass.Excecute(group);
+            commandParser.Parse(command);
+
+
         }
     }
 }
