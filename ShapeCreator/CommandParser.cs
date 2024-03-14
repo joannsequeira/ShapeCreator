@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
+using System.Threading;
 
 namespace ShapeCreator
 {
@@ -52,6 +53,7 @@ namespace ShapeCreator
             for (int lineCounter = 0; lineCounter < comLines.Length; lineCounter++)
             {
                 var line = comLines[lineCounter];
+                Thread.Sleep(1000);  //thread sleep  to show 
 
                 
 

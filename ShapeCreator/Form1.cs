@@ -9,66 +9,73 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace ShapeCreator
 {
     public partial class Form1 : Form
     {
 
-        private Bitmap b;
-        private Shape Shapes;
-        private CmdLists cmdList;
         
-
-
+        
         public Form1()
         {
             InitializeComponent();
-            b = new Bitmap(Width, Height);
-            Shapes = new Shape(Graphics.FromImage(b));
-            cmdList = new CmdLists(Shapes);
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string[] lines = textBox1.Lines;
-            string[] lined = textBox2.Lines;
+            string lines = textBox1.Text.Trim();
+            string lined = textBox2.Text.Trim();
 
-            try
+            threadParser(lines, lined);
+         }
+
+        private void threadParser(string lines, string lined)
+        {
+            Thread thread = new Thread(() =>
             {
-                if (lines.Length > 0)
+                try
                 {
-                    parseCom(string.Join("\n", lines));
+                    if (lines != null && lines.Length > 0)
+                    {
+                        parseCom(string.Join("\n", lines));
+                    }
+                    else if (lined != null && lined.Length > 0)
+                    {
+                        parseCom(string.Join("\n", lined));
+                    }
+                    else
+                    {
+                        throw new ShapeCreatorException("Please enter a command.");
+                    }
                 }
-                else if (lines.Length > 0)
+                catch (ShapeCreatorException x)
                 {
-                    parseCom(string.Join("\n", lined));
+                    var message = x.Message;
+                    if (x.line != 0)
+                    {
+                        message = message + " Line at " + x.line;
+                    }
+                    MessageBox.Show(message, "Processing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                else
+                catch (Exception x)
                 {
-                    throw new ShapeCreatorException("Please enter a command.");
+                    MessageBox.Show(x.Message, "Processing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            }
-            catch (ShapeCreatorException x)
-            {
-                var message = x.Message;
-                if (x.line != 0)
-                {
-                    message = message + " Line at " + x.line;
-                }
-                MessageBox.Show(message, "Processing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exception x)
-            {
-                MessageBox.Show(x.Message, "Processing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            Refresh();
-            
+            });
+            thread.Start();
+
         }
-        
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            threadParser(textBox3.Text.Trim(),null);
+
+        }
 
 
-      
         //Open a file and display in the textbox
         private void button2_Click(object sender, EventArgs e)
         {
@@ -100,8 +107,8 @@ namespace ShapeCreator
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             //display graphics on the bitmap
-                Graphics g = e.Graphics;
-                g.DrawImageUnscaled(b, 0, 0);
+                /* Graphics g = e.Graphics;
+                g.DrawImageUnscaled(b, 0, 0); */
                
         }
 
@@ -123,7 +130,11 @@ namespace ShapeCreator
         public void parseCom(string com)
         {
             try
-            { 
+            {
+                Graphics g = pictureBox1.CreateGraphics();
+                Shape Shapes = new Shape(g);
+
+                CmdLists cmdList = new CmdLists(Shapes);
                 cmdList.Parse(com); //parses the command entered using cmdList
 
             }
@@ -153,5 +164,7 @@ namespace ShapeCreator
                 }
             }
         }
+
+       
     }
 }
