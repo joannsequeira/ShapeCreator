@@ -16,11 +16,12 @@ namespace ShapeCreator
     public partial class Form1 : Form
     {
 
-
+        Graphics g;
 
         public Form1()
         {
             InitializeComponent();
+            g = pictureBox1.CreateGraphics();
 
         }
 
@@ -35,50 +36,54 @@ namespace ShapeCreator
         private void threadParser(string prog, string lines, string lined)
         {
             //syntax check before run
-            parseComSyn(prog, lines, lined, true, true);
-
-
-            Thread thread = new Thread(() =>
+            
+            Boolean isSuccess = parseComSyn(prog, lines, lined, true, true);
+            if (isSuccess)
             {
-                parseComSyn(prog, lines, lined, true, true);
+
+                Thread thread = new Thread(() =>
+            {
+                parseComSyn(prog, lines, lined, false, true);
             });
             thread.Start();
         }
+            }
 
-        private void parseComSyn(string prog, string lines, string lined, Boolean syntaxCheck)
+       
+
+        private Boolean parseComSyn(string prog, string lines, string lined, Boolean syntaxtCheck)
         {
-            parseComSyn(prog, lines, lined, syntaxCheck, false);
+            return parseComSyn(prog, lines, lined, syntaxtCheck, false);
         }
 
-        private void parseComSyn(string prog, string lines, string lined, Boolean syntaxCheck, Boolean fromRun)
-        { 
-
+        private Boolean parseComSyn(string prog, string lines, string lined, Boolean syntaxtCheck, Boolean fromRun)
+        {
             try
             {
                 if (lines != null && lines.Length > 0)
                 {
-                    parseCom(string.Join("\n", lines),syntaxCheck);
+                    parseCom(string.Join("\n", lines), syntaxtCheck);
                 }
                 else if (lined != null && lined.Length > 0)
                 {
-                    parseCom(string.Join("\n", lined),syntaxCheck);
+                    parseCom(string.Join("\n", lined), syntaxtCheck);
                 }
                 else
                 {
                     throw new ShapeCreatorException("Please enter a command.");
                 }
+
                 if (!fromRun)
                 {
-                    MessageBox.Show(prog + (syntaxCheck ? "No Syntaxt Error" : "Run Successfully"), "Success", MessageBoxButtons.OK, MessageBoxIcon.Information); ;
+                    MessageBox.Show(prog + (syntaxtCheck ? "No Syntaxt Error" : "Run Successfully"), "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information); ;
 
                 }
-                else if (!syntaxCheck && fromRun)
+                else if (!syntaxtCheck && fromRun)
                 {
-                    MessageBox.Show(prog + (syntaxCheck ? "No Syntaxt Error" : "Run Successfully"), "Success", MessageBoxButtons.OK, MessageBoxIcon.Information); ;
+                    MessageBox.Show(prog + (syntaxtCheck ? "No Syntaxt Error" : "Run Successfully"), "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information); ;
 
                 }
-
-
+                return true;
             }
             catch (ShapeCreatorException x)
             {
@@ -88,15 +93,17 @@ namespace ShapeCreator
                     message = message + " Line at " + x.line;
                 }
                 MessageBox.Show(prog + message, "Processing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
             catch (Exception x)
             {
                 MessageBox.Show(prog + x.Message, "Processing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
-            
 
-        
+
+
 
 
         private void button5_Click(object sender, EventArgs e)

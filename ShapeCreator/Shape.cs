@@ -59,7 +59,7 @@ namespace ShapeCreator
                 return;
             }
 
-            g.Clear(Color.Transparent);  
+            g.Clear(System.Drawing.SystemColors.ButtonShadow);  
         }
 
         public void ResetPos()  //Reset the cursor to 0,0
