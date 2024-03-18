@@ -75,12 +75,12 @@ namespace ShapeCreator
 
                 if (!fromRun)
                 {
-                    MessageBox.Show(prog + (syntaxtCheck ? "No Syntaxt Error" : "Run Successfully"), "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information); ;
+                    MessageBox.Show(prog + (syntaxtCheck ? "No Syntax Error" : "Ran Successfully"), "Success", MessageBoxButtons.OK, MessageBoxIcon.Information); ;
 
                 }
                 else if (!syntaxtCheck && fromRun)
                 {
-                    MessageBox.Show(prog + (syntaxtCheck ? "No Syntaxt Error" : "Run Successfully"), "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information); ;
+                    MessageBox.Show(prog + (syntaxtCheck ? "No Syntax Error" : "Ran Successfully"), "Success", MessageBoxButtons.OK, MessageBoxIcon.Information); ;
 
                 }
                 return true;
@@ -201,7 +201,19 @@ namespace ShapeCreator
                 }
             }
         }
+        private void button6_Click(object sender, EventArgs e)
+        {
+            parseComSyn("Second Program: ", textBox3.Text.Trim(), null, true);
+        }
 
-       
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string lines = textBox1.Text.Trim();
+            string lined = textBox2.Text.Trim();
+
+            parseComSyn("First Program: ", lines, lined, true);
+        }
+
+
     }
 }

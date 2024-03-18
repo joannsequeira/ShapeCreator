@@ -124,6 +124,7 @@
             this.button4.TabIndex = 7;
             this.button4.Text = "Syntax";
             this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button5
             // 
@@ -147,6 +148,7 @@
             this.button6.TabIndex = 9;
             this.button6.Text = "Syntax";
             this.button6.UseVisualStyleBackColor = false;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // textBox3
             // 
