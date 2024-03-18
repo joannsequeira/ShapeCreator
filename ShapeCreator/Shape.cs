@@ -38,6 +38,11 @@ namespace ShapeCreator
             this.y = y;
         }
 
+        public string getPenPos()
+        {
+            return this.x + " " + this.y;
+        }
+
         public void PenChange(String color)  //Change pen color
         {
             var colr = Color.FromName(color);
@@ -138,6 +143,7 @@ namespace ShapeCreator
 
         
     }
+
 
     }
 

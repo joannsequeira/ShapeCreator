@@ -53,7 +53,8 @@ namespace ShapeCreator
             for (int lineCounter = 0; lineCounter < comLines.Length; lineCounter++)
             {
                 var line = comLines[lineCounter];
-                Thread.Sleep(1000);  //thread sleep  to show 
+                line = line.Trim();
+                //Thread.Sleep(1000);  //thread sleep  to show 
 
                 
 
@@ -80,7 +81,7 @@ namespace ShapeCreator
 
                         }
                     }
-                if (line.StartsWith("loop") || line.StartsWith("endloop") || skipLoopBlock) //handle loop, endloop and repeating lines in block
+               else if (line.StartsWith("loop") || line.StartsWith("endloop") || skipLoopBlock) //handle loop, endloop and repeating lines in block
                 {
                     inLoopBlock = true;
 
@@ -193,15 +194,15 @@ namespace ShapeCreator
                 //throw exceptions if not found
                 if (!line.StartsWith("endif") && inIfBlock)
                 {
-                    throw new ShapeCreatorException("endif not exist.", lineCounter);
+                    throw new ShapeCreatorException("endif does not exist.", lineCounter);
                 }
                 if (!line.StartsWith("endloop") && inLoopBlock)
                 {
-                    throw new ShapeCreatorException("endloop not exist.", lineCounter);
+                    throw new ShapeCreatorException("endloop does not exist.", lineCounter);
                 }
                 if (!line.StartsWith("endmthd") && inMthdBlock)
                 {
-                    throw new ShapeCreatorException("endmthd not exist.", lineCounter);
+                    throw new ShapeCreatorException("endmthd does not exist.", lineCounter);
                 }
             }
 
