@@ -17,9 +17,10 @@ namespace ShapeCreator
         int x, y;
         private bool oil = false;
         SolidBrush sb;
+        Boolean syntaxCheck = false;
         
 
-        public Shape(Graphics g)
+        public Shape(Graphics g, Boolean syntaxCheck)
 
         {
             this.g = g;
@@ -27,6 +28,7 @@ namespace ShapeCreator
             y = 0;
             pn = new Pen(Color.Black, 3);
             sb = new SolidBrush(Color.Black);
+            this.syntaxCheck = syntaxCheck;
         }
 
         public void PenPos(int x, int y)  //Method to change cursor pos
@@ -52,6 +54,11 @@ namespace ShapeCreator
 
         public void Clearsc() //Clearing the screen
         {
+            if (syntaxCheck)
+            {
+                return;
+            }
+
             g.Clear(Color.Transparent);  
         }
 
@@ -63,6 +70,10 @@ namespace ShapeCreator
 
         public void DrawRect(int width, int height) {   //Draw Rectangle
             var rect = new Rectangle(x, y, width, height);
+            if (syntaxCheck)
+            {
+                return;
+            }
 
             if (oil)   
             {
@@ -81,6 +92,10 @@ namespace ShapeCreator
 
         public void DrawCirc(int radius) //Draw Circle
         {
+            if (syntaxCheck)
+            {
+                return;
+            }
 
             if (oil)
             {
@@ -94,6 +109,10 @@ namespace ShapeCreator
 
         public void DrawTo(int a, int b)  //Draw line to specified points
         {
+            if (syntaxCheck)
+            {
+                return;
+            }
             g.DrawLine(pn,x, y, a,b);
             x = a;
             y = b;
@@ -101,6 +120,10 @@ namespace ShapeCreator
 
         public void DrawTri(int i, int j, int k)
         {
+            if (syntaxCheck)
+            {
+                return;
+            }
             Point[] points = { new Point(x,y), new Point(x + i, y), new Point(x +j, y+k) //form the triangle vertices cosidering x,y pos
 
            };

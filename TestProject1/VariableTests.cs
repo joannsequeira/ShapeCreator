@@ -17,7 +17,7 @@ namespace VariableTests
 
             {
 
-                Shape shape = new Shape(null);
+                Shape shape = new Shape(null, true);
                 CmdLists commandParser = new CmdLists(shape);
 
                 var command = "a = 5";
@@ -33,7 +33,7 @@ namespace VariableTests
 
             {
 
-                Shape shape = new Shape(null);
+                Shape shape = new Shape(null, true);
                 CmdLists commandParser = new CmdLists(shape);
 
                 var command = "b = 5\nb = b + 50";
@@ -49,7 +49,7 @@ namespace VariableTests
 
             {
 
-                Shape shape = new Shape(null);
+                Shape shape = new Shape(null, true);
                 CmdLists commandParser = new CmdLists(shape);
 
                 var command = "b = 90\nb = b - 50";
@@ -65,7 +65,7 @@ namespace VariableTests
 
             {
 
-                Shape shape = new Shape(null);
+                Shape shape = new Shape(null, true);
                 CmdLists commandParser = new CmdLists(shape);
 
                 var command = "b = 5\nb = b + 50\n DrawCirc b";
@@ -81,7 +81,7 @@ namespace VariableTests
 
             {
 
-                Shape shape = new Shape(null);
+                Shape shape = new Shape(null, true);
                 CmdLists commandParser = new CmdLists(shape);
 
                 var command = "b = 5\nc = 9\ndrawRect b c";
@@ -100,7 +100,7 @@ namespace VariableTests
 
             {
 
-                Shape shape = new Shape(null);
+                Shape shape = new Shape(null, true);
                 CmdLists commandParser = new CmdLists(shape);
 
                 var command = "b = 5\ndrawCirc c";

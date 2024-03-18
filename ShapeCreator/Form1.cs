@@ -16,12 +16,12 @@ namespace ShapeCreator
     public partial class Form1 : Form
     {
 
-        
-        
+
+
         public Form1()
         {
             InitializeComponent();
-            
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -29,49 +29,79 @@ namespace ShapeCreator
             string lines = textBox1.Text.Trim();
             string lined = textBox2.Text.Trim();
 
-            threadParser(lines, lined);
-         }
+            threadParser("First Program: ", lines, lined);
+        }
 
-        private void threadParser(string lines, string lined)
+        private void threadParser(string prog, string lines, string lined)
         {
+            //syntax check before run
+            parseComSyn(prog, lines, lined, true, true);
+
+
             Thread thread = new Thread(() =>
             {
-                try
-                {
-                    if (lines != null && lines.Length > 0)
-                    {
-                        parseCom(string.Join("\n", lines));
-                    }
-                    else if (lined != null && lined.Length > 0)
-                    {
-                        parseCom(string.Join("\n", lined));
-                    }
-                    else
-                    {
-                        throw new ShapeCreatorException("Please enter a command.");
-                    }
-                }
-                catch (ShapeCreatorException x)
-                {
-                    var message = x.Message;
-                    if (x.line != 0)
-                    {
-                        message = message + " Line at " + x.line;
-                    }
-                    MessageBox.Show(message, "Processing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                catch (Exception x)
-                {
-                    MessageBox.Show(x.Message, "Processing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                parseComSyn(prog, lines, lined, true, true);
             });
             thread.Start();
-
         }
+
+        private void parseComSyn(string prog, string lines, string lined, Boolean syntaxCheck)
+        {
+            parseComSyn(prog, lines, lined, syntaxCheck, false);
+        }
+
+        private void parseComSyn(string prog, string lines, string lined, Boolean syntaxCheck, Boolean fromRun)
+        { 
+
+            try
+            {
+                if (lines != null && lines.Length > 0)
+                {
+                    parseCom(string.Join("\n", lines),syntaxCheck);
+                }
+                else if (lined != null && lined.Length > 0)
+                {
+                    parseCom(string.Join("\n", lined),syntaxCheck);
+                }
+                else
+                {
+                    throw new ShapeCreatorException("Please enter a command.");
+                }
+                if (!fromRun)
+                {
+                    MessageBox.Show(prog + (syntaxCheck ? "No Syntaxt Error" : "Run Successfully"), "Success", MessageBoxButtons.OK, MessageBoxIcon.Information); ;
+
+                }
+                else if (!syntaxCheck && fromRun)
+                {
+                    MessageBox.Show(prog + (syntaxCheck ? "No Syntaxt Error" : "Run Successfully"), "Success", MessageBoxButtons.OK, MessageBoxIcon.Information); ;
+
+                }
+
+
+            }
+            catch (ShapeCreatorException x)
+            {
+                var message = x.Message;
+                if (x.line != 0)
+                {
+                    message = message + " Line at " + x.line;
+                }
+                MessageBox.Show(prog + message, "Processing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(prog + x.Message, "Processing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+            
+
+        
+
 
         private void button5_Click(object sender, EventArgs e)
         {
-            threadParser(textBox3.Text.Trim(),null);
+            threadParser("Second Program:",textBox3.Text.Trim(),null);
 
         }
 
@@ -120,19 +150,19 @@ namespace ShapeCreator
                 var com = textBox2.Text;
                 if (string.IsNullOrEmpty(com))
                     return;
-                parseCom(com);
+                threadParser("First Program: ", com, null);
                 textBox2.Text = " ";
                 Refresh();
 
             }
         }
 
-        public void parseCom(string com)
+        public void parseCom(string com, Boolean syntaxCheck)
         {
             try
             {
                 Graphics g = pictureBox1.CreateGraphics();
-                Shape Shapes = new Shape(g);
+                Shape Shapes = new Shape(g, syntaxCheck);
 
                 CmdLists cmdList = new CmdLists(Shapes);
                 cmdList.Parse(com); //parses the command entered using cmdList
@@ -156,9 +186,9 @@ namespace ShapeCreator
                     string[] lines = TextLines.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries); //lines are split to individual command lines
                     foreach (var line in lines)
                     {
-                        
-                            parseCom(line.Trim());
-                            Refresh();
+
+                        threadParser("First Program:", line.Trim(), null);
+                        Refresh();
                       
                     }
                 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 
 
 //https://learn.microsoft.com/en-us/visualstudio/test/getting-started-with-unit-testing?view=vs-2022&tabs=dotnet%2Cmstest
@@ -20,7 +21,7 @@ namespace SingleCommandTest
         {
             var command = " drawCirc 50";
 
-            Shape shape = new Shape(null);
+            Shape shape = new Shape(null, true);
             CmdLists commandParser = new CmdLists(shape);
 
             commandParser.Parse(command);

@@ -22,6 +22,10 @@ namespace ShapeCreator
             {
                 throw new ShapeCreatorException("Insufficient Parameters");
             }
+            else if (group.Count > 2)
+            {
+                throw new ShapeCreatorException("Parameters do not match");
+            }
             Shapes.DrawCirc(int.Parse(group[1].Value)); //extracting value of radius from the regular expression groups
         }
     }
