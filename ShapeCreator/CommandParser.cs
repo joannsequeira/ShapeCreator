@@ -183,9 +183,9 @@ namespace ShapeCreator
                         }
                     }
 
-                    else
-                    {
-                        ExcecuteCom(line.Trim());
+                    else if (line.Length > 0)
+                {
+                        ExcecuteCom(line);
                     }
                 
             if (lineCounter == comLines.Length - 1) //check the last statement
