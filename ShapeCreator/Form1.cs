@@ -33,6 +33,12 @@ namespace ShapeCreator
             threadParser("First Program: ", lines, lined);
         }
 
+        /// <summary>
+        /// Parse commands and create,start threads if syntax check is a success
+        /// </summary>
+        /// <param name="prog">Program identifier</param>
+        /// <param name="lines">for multiline textbox commands</param>
+        /// <param name="lined">single line textbox command</param>
         private void threadParser(string prog, string lines, string lined)
         {
             //syntax check before run
@@ -41,21 +47,38 @@ namespace ShapeCreator
             if (isSuccess)
             {
 
-                Thread thread = new Thread(() =>
+                Thread thread = new Thread(() => //if success, create thread 
             {
-                parseComSyn(prog, lines, lined, false, true);
+                parseComSyn(prog, lines, lined, false, true); //without syntax check
             });
-            thread.Start();
+            thread.Start(); //start thread execution
         }
             }
 
-       
 
+        /// <summary>
+        /// Overloaded version of parseComSyn method
+        /// </summary>
+        /// <param name="prog">Program identifier keyword</param>
+        /// <param name="lines">for multiline textbox commands</param>
+        /// <param name="lined">single line textbox command</param>
+        /// <param name="syntaxtCheck">flag for only syntax check</param>
+        /// <returns>returns parameters with fromRun set to false</returns>
         private Boolean parseComSyn(string prog, string lines, string lined, Boolean syntaxtCheck)
         {
             return parseComSyn(prog, lines, lined, syntaxtCheck, false);
         }
 
+
+        /// <summary>
+        /// Parses command for syntax check and execution
+        /// </summary>
+        /// <param name="prog">Program identifier keyword</param>
+        /// <param name="lines">for multiline textbox commands</param>
+        /// <param name="lined">single line textbox command</param>
+        /// <param name="syntaxtCheck">flag for only syntax check</param>
+        /// <param name="fromRun">flag for syntax check from execution</param>
+        /// <returns>true if success, false if error</returns>
         private Boolean parseComSyn(string prog, string lines, string lined, Boolean syntaxtCheck, Boolean fromRun)
         {
             try
@@ -105,7 +128,7 @@ namespace ShapeCreator
 
 
 
-
+        //run the second multiline textbox code
         private void button5_Click(object sender, EventArgs e)
         {
             threadParser("Second Program:",textBox3.Text.Trim(),null);
@@ -201,12 +224,14 @@ namespace ShapeCreator
                 }
             }
         }
+
+        //button to check syntax for second multiline textbox 
         private void button6_Click(object sender, EventArgs e)
         {
             parseComSyn("Second Program: ", textBox3.Text.Trim(), null, true);
         }
 
-
+        //button to check syntax for textbox and commandline
         private void button4_Click(object sender, EventArgs e)
         {
             string lines = textBox1.Text.Trim();
