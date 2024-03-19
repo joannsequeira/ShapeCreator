@@ -64,19 +64,19 @@ namespace ShapeCreator
                         if (line.StartsWith("endif"))
                         {
                             inIfBlock = false; //outside if block
-                            skipIfBlock = false;
+                            skipIfBlock = false; 
                             continue;
                         }
                         else if (skipIfBlock)
                         {
-                            continue;
+                            continue;  
                         }
                         else
                         {
-                            string condif = line.Substring(3).Trim();
-                            if (!ConditionChecker(condif, lineCounter))
+                            string condif = line.Substring(3).Trim(); //extract condition
+                            if (!ConditionChecker(condif, lineCounter))  //check condition
                             {
-                                skipIfBlock = true;
+                                skipIfBlock = true;  //if not true, skip lines till end if
                             }
 
                         }
@@ -90,7 +90,7 @@ namespace ShapeCreator
 
                         if (!skipLoopBlock)
                         {
-                            lineCounter = lpCountr - 1;
+                            lineCounter = lpCountr - 1;  //repeat loop till condition is false
                         }
                         else
                         {
@@ -101,7 +101,7 @@ namespace ShapeCreator
                     }
                     else if (skipLoopBlock)
                     {
-                        continue;
+                        continue; //skip lines till end of loop
                     }
                     else if (line.StartsWith("loop"))
                     {
@@ -112,7 +112,7 @@ namespace ShapeCreator
                         string condLoop = line.Substring(4).Trim();
                         if (!ConditionChecker(condLoop, lineCounter))
                         {
-                            skipLoopBlock = true;
+                            skipLoopBlock = true; //if not true, skip lines till end if
                         }
                     }
                 }
@@ -171,8 +171,8 @@ namespace ShapeCreator
                             string varName = parts[0].Trim(); //store first part as var name
 
 
-                            string opVal = parts[1].Trim();
-                            int result = Op(opVal, lineCounter);
+                            string opVal = parts[1].Trim();  
+                            int result = Op(opVal, lineCounter); //process value 
 
 
                             VariableHandler(varName, result);
