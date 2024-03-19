@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ShapeCreator;
 
-namespace TestProject1
+namespace LoopTests
 {
     [TestClass]
     public class LoopTests

@@ -206,6 +206,7 @@ namespace ShapeCreator
             parseComSyn("Second Program: ", textBox3.Text.Trim(), null, true);
         }
 
+
         private void button4_Click(object sender, EventArgs e)
         {
             string lines = textBox1.Text.Trim();

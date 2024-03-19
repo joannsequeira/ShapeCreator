@@ -156,7 +156,7 @@ namespace ShapeCreator
 
                     if (!mthdDeclare.ContainsKey(mthdCallName))
                     {
-                        throw new ShapeCreatorException("Method not exist.", lineCounter);
+                        throw new ShapeCreatorException("Method does not exist.", lineCounter);
                     }
 
                     var mthdCom = mthdDeclare[mthdCallName];  //commands loaded into mthdCom from Dictionary

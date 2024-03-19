@@ -1,20 +1,23 @@
-﻿using System;
+﻿using ShapeCreator;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ShapeCreator;
 
-namespace IfTests
+
+
+namespace MethodTests
 {
     [TestClass]
-    public  class IfTests
+    public class MethodTests
     {
         [TestMethod]
-        public void inValidIfCondition()
+        public void validMethodTest()
 
         {
-            var command = "a = 50\r\nif a < 5\r\n drawCirc 50\r\nendif";
+            var command = "mthd testm1\r\ndrawCirc 80\r\nendmthd\r\n\r\ncallmthd testm1";
 
             Shape shape = new Shape(null, true);
             CmdLists commandParser = new CmdLists(shape);
@@ -25,34 +28,32 @@ namespace IfTests
 
         }
 
+
         [TestMethod]
-        public void validIfCondition()
+        public void invalidMethodCallTest()
 
         {
-            var command = "a = 1\r\nif a < 5\r\n drawCirc 50\r\nendif";
+            var command = "mthd test\r\ndrawCirc 80\r\nendmthd\r\n\r\ncallmthd test1";
 
             Shape shape = new Shape(null, true);
             CmdLists commandParser = new CmdLists(shape);
-
-            commandParser.Parse(command);
-
-            Assert.AreEqual("0 0", shape.getPenPos());
-
-        }
-
-        [TestMethod]
-        // need to fix this test
-        public void inValidIfCodeBlock_MissingEndIf()
-
-        {
-            var command = "a = 1\r\nif a < 5\r\n drawCirc 50\r\n";
-
-            Shape shape = new Shape(null, true);
-            CmdLists commandParser = new CmdLists(shape);
-
 
             ShapeCreatorException ex = Assert.ThrowsException<ShapeCreatorException>(() => commandParser.Parse(command));
-            Assert.AreEqual("endif does not exist.", ex.Message);
+            Assert.AreEqual("Method does not exist.", ex.Message);
+
+        }
+
+        [TestMethod]
+        public void mssingMethodEndBlockTest()
+
+        {
+            var command = "mthd test\r\ndrawCirc 80\r\ncallmthd test";
+
+            Shape shape = new Shape(null, true);
+            CmdLists commandParser = new CmdLists(shape);
+
+            ShapeCreatorException ex = Assert.ThrowsException<ShapeCreatorException>(() => commandParser.Parse(command));
+            Assert.AreEqual("endmthd does not exist.", ex.Message);
 
         }
     }
