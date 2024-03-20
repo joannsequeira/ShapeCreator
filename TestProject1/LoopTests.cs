@@ -10,7 +10,9 @@ namespace LoopTests
     [TestClass]
     public class LoopTests
     {
-
+        /// <summary>
+        /// Loop to test invalid(not true) condition 
+        /// </summary>
         [TestMethod]
         public void invalidLoopCondition()
 
@@ -25,6 +27,10 @@ namespace LoopTests
             Assert.AreEqual("0 0", shape.getPenPos());
 
         }
+
+        /// <summary>
+        /// Loop to test valid(true) condition 
+        /// </summary>
 
         [TestMethod]
         public void validLoopCondition()
@@ -41,8 +47,13 @@ namespace LoopTests
 
         }
 
+        /// <summary>
+        /// Loop to test if loop block missing endloop
+        /// </summary>
+
         [TestMethod]
-        // need to fix this test
+        
+
         public void invalidLoopCodeBlock_MissingEndLoop()
 
         {
