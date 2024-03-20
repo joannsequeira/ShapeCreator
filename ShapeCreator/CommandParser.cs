@@ -171,7 +171,7 @@ namespace ShapeCreator
                             string varName = parts[0].Trim(); //store first part as var name
 
 
-                            string opVal = parts[1].Trim();  
+                            string opVal = parts[1].Trim();  //store second part
                             int result = Op(opVal, lineCounter); //process value 
 
 
