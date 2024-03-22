@@ -290,7 +290,7 @@ namespace ShapeCreator
             }
 
                     string[] opSplit = opVal.Split(optr);
-                    if(opSplit.Length != 2)
+                    if(opSplit.Length != 2)  //if not split into two parts
                     
                         throw new ShapeCreatorException("Invalid operator input provided", lineCounter);
                     if (!int.TryParse(getVar(opSplit[0].Trim()), out int op1Int) || !int.TryParse(getVar(opSplit[1].Trim()), out int op2Int))
@@ -298,16 +298,16 @@ namespace ShapeCreator
             
                     switch(optr)
                     {
-                        case '+':  return op1Int + op2Int; 
+                        case '+':  return op1Int + op2Int;  //addition
                            
-                        case '-': return op1Int - op2Int; 
-                        case '*': return op1Int * op2Int; 
-                        case '/': 
+                        case '-': return op1Int - op2Int;  //subtraction
+                        case '*': return op1Int * op2Int;  //multiplication
+                        case '/':                          //division
                             if(op2Int == 0)
                             {
                                 throw new ShapeCreatorException("Division By Zero", lineCounter);
                             }
-                            return op1Int / op2Int;
+                            return op1Int / op2Int; 
                           
 
                         default: throw new ShapeCreatorException("Invalid Operator", lineCounter);
@@ -317,21 +317,21 @@ namespace ShapeCreator
             }
 
         /// <summary>
-        /// Check if format is variavle cond value
+        /// Check if format is right and return true or false
         /// </summary>
         /// <param name="condif">Condition that needs to be checked</param>
         /// <returns>If the condition is true or false</returns>
-        /// <exception cref="Exception">Invalid Format</exception>
+        /// <exception cref="ShapeCreatorException">Invalid Format</exception>
         /// <exception cref="ShapeCreatorException">Invalid Conditonal Operator</exception>
         private bool ConditionChecker(string condif, int lineCounter)  //trying for cond like c < 10 etc
         {
             string[] parts = condif.Split(' ');
-            if (parts.Length != 3)
+            if (parts.Length != 3)  //check if parts are 3
             {
                 throw new ShapeCreatorException("Invalid condition format", lineCounter); 
             }
-            string varName = parts[0];
-            string operatr = parts[1];
+            string varName = parts[0]; //extract and assign name
+            string operatr = parts[1]; //extract and assign operator
             int opval;
             if (!int.TryParse(parts[2], out opval))
                 { throw new ShapeCreatorException("Invalid value provided", lineCounter); }
@@ -339,7 +339,8 @@ namespace ShapeCreator
             {
                 throw new ShapeCreatorException("Invalid varname provided", lineCounter);
             }
-            int varValue = variables[varName];
+            
+            int varValue = variables[varName]; //assign value matching name in variables dictionary
             
             //condition check
             switch(operatr){
@@ -347,7 +348,7 @@ namespace ShapeCreator
                 case "!=": return varValue != opval;
                 case "<": return varValue < opval;
                 case ">": return varValue > opval;
-                //adding more after checking run
+                
                 default:
                     throw new ShapeCreatorException("Invalid operator given", lineCounter);
 
