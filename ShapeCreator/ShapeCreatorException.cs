@@ -24,10 +24,6 @@ namespace ShapeCreator
             this.line = line1 + 1;
         }
 
-        public ShapeCreatorException(string message, Exception inner, int line)
-            : base(message, inner)
-        {
-            this.line = line + 1;
-        }
+        
     }
 }
