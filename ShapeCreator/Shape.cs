@@ -141,9 +141,39 @@ namespace ShapeCreator
                 g.DrawPolygon(pn, points);
         }
 
-        
+        public void ShapeAni(Random random, int x, int y)
+        {
+           
+                int circSize = random.Next(20, 100);
+                int rectW = random.Next(20, 200);
+                int rectH = random.Next(20, 200);
+                int triPts = random.Next(20, 100);
+
+                Clearsc();
+
+                // Draw a rectangle
+                PenPos(x + 50, y); // Adjust the position for each shape to prevent overlap
+                DrawRect(rectW, rectH);
+                System.Threading.Thread.Sleep(2000);
+
+                // Draw a circle
+                PenPos(x, y + 100);
+                DrawCirc(circSize);
+                System.Threading.Thread.Sleep(1000);
+
+                // Draw a triangle
+                PenPos(x + 100, y + 100);
+                DrawTri(triPts, triPts, triPts);
+
+                // Add some delay to observe the animation
+                System.Threading.Thread.Sleep(3000);
+            
+        }
+
+
+
     }
 
 
-    }
+}
 

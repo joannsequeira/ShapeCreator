@@ -17,11 +17,16 @@ namespace ShapeCreator
     {
 
         Graphics g;
+        private bool aniControl = false;
+       
+        private Shape shape;
 
         public Form1()
         {
             InitializeComponent();
             g = pictureBox1.CreateGraphics();
+            
+
 
         }
 
@@ -241,5 +246,21 @@ namespace ShapeCreator
         }
 
 
+
+
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            shape = new Shape(g, false);
+            Random random = new Random();
+            int x = random.Next(pictureBox1.Width);
+            int y = random.Next(pictureBox1.Height);
+
+            // Call ShapeAni method to trigger animation
+           shape.ShapeAni(random, x, y);
+
+        }
+
+        
     }
 }
