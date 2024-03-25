@@ -49,6 +49,9 @@ namespace ShapeCreator
             var mthdName = "";
 
 
+            
+
+
 
             for (int lineCounter = 0; lineCounter < comLines.Length; lineCounter++)
             {

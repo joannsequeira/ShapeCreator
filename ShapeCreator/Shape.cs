@@ -141,13 +141,19 @@ namespace ShapeCreator
                 g.DrawPolygon(pn, points);
         }
 
+        /// <summary>
+        /// Draw Random shapes with delay effect
+        /// </summary>
+        /// <param name="random">Generate Random numbers for shape parameters</param>
+        /// <param name="x"> x coordinate for drawing</param>
+        /// <param name="y">y coordinate for drawing</param>
         public void ShapeAni(Random random, int x, int y)
         {
            
-                int circSize = random.Next(20, 100);
-                int rectW = random.Next(20, 200);
-                int rectH = random.Next(20, 200);
-                int triPts = random.Next(20, 100);
+                int circSize = random.Next(20, 100); //radius
+                int rectW = random.Next(20, 200); //rect width
+                int rectH = random.Next(20, 200);  //rect height
+                int triPts = random.Next(20, 100); //triangle points
 
                 Clearsc();
 

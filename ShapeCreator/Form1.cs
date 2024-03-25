@@ -17,7 +17,7 @@ namespace ShapeCreator
     {
 
         Graphics g;
-        private bool aniControl = false;
+        
        
         private Shape shape;
 
