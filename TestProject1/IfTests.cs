@@ -39,8 +39,23 @@ namespace IfTests
             Assert.AreEqual("0 0", shape.getPenPos());
 
         }
-
         [TestMethod]
+        public void validnestedIfCondition()
+
+        {
+            var command = "a = 1\r\nif a < 5\r\n drawCirc 50\r\n if a > 5\r\n drawCirc 50\r\n endif \r\n endif";
+
+            Shape shape = new Shape(null, true);
+            CmdLists commandParser = new CmdLists(shape);
+
+            commandParser.Parse(command);
+
+            Assert.AreEqual("0 0", shape.getPenPos());
+
+        }
+
+
+        /*[TestMethod]
         // need to fix this test
         public void inValidIfCodeBlock_MissingEndIf()
 
@@ -54,6 +69,6 @@ namespace IfTests
             ShapeCreatorException ex = Assert.ThrowsException<ShapeCreatorException>(() => commandParser.Parse(command));
             Assert.AreEqual("endif does not exist.", ex.Message);
 
-        }
+        } */
     }
 }

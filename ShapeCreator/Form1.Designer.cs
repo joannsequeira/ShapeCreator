@@ -161,12 +161,13 @@
             // 
             // button7
             // 
+            this.button7.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.button7.Location = new System.Drawing.Point(256, 13);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(75, 23);
             this.button7.TabIndex = 11;
-            this.button7.Text = "button7";
-            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Text = "Random";
+            this.button7.UseVisualStyleBackColor = false;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // Form1

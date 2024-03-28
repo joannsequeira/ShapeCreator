@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using System.Threading;
+using System.Diagnostics.Eventing.Reader;
 
 namespace ShapeCreator
 {
@@ -49,7 +50,7 @@ namespace ShapeCreator
             var mthdName = "";
 
 
-            
+            Stack<bool> nestIf = new Stack<bool>();  //stack to track nested ifs
 
 
 
@@ -59,32 +60,66 @@ namespace ShapeCreator
                 line = line.Trim();
                 //Thread.Sleep(1000);  //thread sleep  to show 
 
-                
 
-                    if (line.StartsWith("if") || line.StartsWith("endif") || skipIfBlock) //handle if, endif and skpping lines in block
+
+                if (line.StartsWith("if") || line.StartsWith("endif") || skipIfBlock) //handle if, endif and skpping lines in block
+                {
+                    if (line.StartsWith("if"))
                     {
                         inIfBlock = true;  //inside if block
-                        if (line.StartsWith("endif"))
+                        string condif = line.Substring(2).Trim();  //extract condition
+                        if (!ConditionChecker(condif, lineCounter))  //check condition
                         {
-                            inIfBlock = false; //outside if block
-                            skipIfBlock = false; 
-                            continue;
-                        }
-                        else if (skipIfBlock)
-                        {
-                            continue;  
+                            skipIfBlock = true;  //if not true, skip lines till end if
+                            nestIf.Push(true); //true for nested if block 
                         }
                         else
                         {
-                            string condif = line.Substring(3).Trim(); //extract condition
-                            if (!ConditionChecker(condif, lineCounter))  //check condition
-                            {
-                                skipIfBlock = true;  //if not true, skip lines till end if
-                            }
-
+                            nestIf.Push(false); //false for non-skipped if block
                         }
                     }
-               else if (line.StartsWith("loop") || line.StartsWith("endloop") || skipLoopBlock) //handle loop, endloop and repeating lines in block
+                    if (nestIf.Count > 0 && nestIf.Peek())
+                    {
+                        //skipped if block, pop stack
+                        nestIf.Pop();
+                        continue; //skip to next line
+                    }
+                    inIfBlock = false; //outside if block
+                    skipIfBlock = false;
+                    if (nestIf.Count > 0)
+                    {
+                        nestIf.Pop(); //pop if out of present block
+                    }
+                }
+                else if (skipIfBlock || nestIf.Count > 0 && nestIf.Peek())
+                {
+                    continue; //skip lines inside if block
+                }
+
+
+
+                /*if (line.StartsWith("endif"))
+                {
+                    inIfBlock = false; //outside if block
+                    skipIfBlock = false; 
+                    continue;
+                }
+                else if (skipIfBlock)
+                {
+                    continue;  
+                }
+                else
+                {
+                    string condif = line.Substring(3).Trim(); //extract condition
+                    if (!ConditionChecker(condif, lineCounter))  //check condition
+                    {
+                        skipIfBlock = true;  //if not true, skip lines till end if
+                    }
+
+                }
+            } */
+
+                else if (line.StartsWith("loop") || line.StartsWith("endloop") || skipLoopBlock) //handle loop, endloop and repeating lines in block
                 {
                     inLoopBlock = true;
 
@@ -141,20 +176,21 @@ namespace ShapeCreator
                         inMthdBlock = true;  //set flag to inside block
                     }
                     else
-                    { 
-                     if  (mthdVar.Length > 0) {
-                      mthdVar = mthdVar + '\n' + line;  //for methods with multiple lines
-
-                    }
-                    else
                     {
-                        mthdVar = line;  
+                        if (mthdVar.Length > 0)
+                        {
+                            mthdVar = mthdVar + '\n' + line;  //for methods with multiple lines
+
+                        }
+                        else
+                        {
+                            mthdVar = line;
+                        }
                     }
-                }
                 }
                 else if (line.StartsWith("callmthd"))
                 {
-                    string[] mthdCall = line.Split(' ');  
+                    string[] mthdCall = line.Split(' ');
                     string mthdCallName = mthdCall[1].Trim();
 
                     if (!mthdDeclare.ContainsKey(mthdCallName))
@@ -167,35 +203,35 @@ namespace ShapeCreator
                 }
 
                 else if (line.Contains("="))
-                    {
-                        string[] parts = line.Split('='); //check line for "=" and split the line to parts
-                        if (parts.Length == 2)
-                        {
-                            string varName = parts[0].Trim(); //store first part as var name
-
-
-                            string opVal = parts[1].Trim();  //store second part
-                            int result = Op(opVal, lineCounter); //process value 
-
-
-                            VariableHandler(varName, result);
-                        }
-                        else
-                        {
-                            throw new ShapeCreatorException("Format for variable is wrong", lineCounter);
-                        }
-                    }
-
-                    else if (line.Length > 0)
                 {
-                        ExcecuteCom(line);
+                    string[] parts = line.Split('='); //check line for "=" and split the line to parts
+                    if (parts.Length == 2)
+                    {
+                        string varName = parts[0].Trim(); //store first part as var name
+
+
+                        string opVal = parts[1].Trim();  //store second part
+                        int result = Op(opVal, lineCounter); //process value 
+
+
+                        VariableHandler(varName, result);
                     }
+                    else
+                    {
+                        throw new ShapeCreatorException("Format for variable is wrong", lineCounter);
+                    }
+                }
+
+                else if (line.Length > 0)
+                {
+                    ExcecuteCom(line);
+                }
                 
             if (lineCounter == comLines.Length - 1) //check the last statement
             {
                 //check for end statement when if,loop,mthd used 
                 //throw exceptions if not found
-                if (!line.StartsWith("endif") && inIfBlock)
+                if (nestIf.Count > 0)
                 {
                     throw new ShapeCreatorException("endif does not exist.", lineCounter);
                 }
@@ -383,7 +419,8 @@ namespace ShapeCreator
                 new CommandEntry { CmdRg = @"drawCirc (\d+)$", Command = new CircClass(shape)},  //Draw Circle
                 new CommandEntry { CmdRg = @"drawTo (\d+) (\d+)$", Command = new DrawTo(shape)}, //Draw Line
                 new CommandEntry { CmdRg = @"moveTo (\d+) (\d+)$", Command = new PenPos(shape)}, //Move pointer
-                new CommandEntry { CmdRg = @"drawTri (\d+) (\d+) (\d+)$", Command = new TriClass(shape)} //Draw Triangle
+                new CommandEntry { CmdRg = @"drawTri (\d+) (\d+) (\d+)$", Command = new TriClass(shape)}, //Draw Triangle
+                new CommandEntry { CmdRg = @"drawCube (\d+)$", Command = new TriClass(shape)} //Draw Cube
 
             };
 
