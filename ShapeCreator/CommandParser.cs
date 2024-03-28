@@ -78,23 +78,27 @@ namespace ShapeCreator
                             nestIf.Push(false); //false for non-skipped if block
                         }
                     }
-                    if (nestIf.Count > 0 && nestIf.Peek())
+                    else if (line.StartsWith("endif"))
                     {
-                        //skipped if block, pop stack
-                        nestIf.Pop();
-                        continue; //skip to next line
+                        if (nestIf.Count > 0 && nestIf.Peek())
+                        {
+                            //skipped if block, pop stack
+                            nestIf.Pop();
+                            continue; //skip to next line
+                        }
+                        inIfBlock = false; //outside if block
+                        skipIfBlock = false;
+                        if (nestIf.Count > 0)
+                        {
+                            nestIf.Pop(); //pop if out of present block
+                        }
                     }
-                    inIfBlock = false; //outside if block
-                    skipIfBlock = false;
-                    if (nestIf.Count > 0)
+                    else if (skipIfBlock || nestIf.Count > 0 && nestIf.Peek())
                     {
-                        nestIf.Pop(); //pop if out of present block
+                        continue; //skip lines inside if block
                     }
                 }
-                else if (skipIfBlock || nestIf.Count > 0 && nestIf.Peek())
-                {
-                    continue; //skip lines inside if block
-                }
+
 
 
 

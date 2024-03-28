@@ -55,8 +55,8 @@ namespace IfTests
         }
 
 
-        /*[TestMethod]
-        // need to fix this test
+        [TestMethod]
+        
         public void inValidIfCodeBlock_MissingEndIf()
 
         {
@@ -69,6 +69,6 @@ namespace IfTests
             ShapeCreatorException ex = Assert.ThrowsException<ShapeCreatorException>(() => commandParser.Parse(command));
             Assert.AreEqual("endif does not exist.", ex.Message);
 
-        } */
+        } 
     }
 }
